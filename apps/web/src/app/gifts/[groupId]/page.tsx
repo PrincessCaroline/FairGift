@@ -5,10 +5,12 @@ import { StarIcon, ArrowTopRightOnSquareIcon, PlusIcon } from '@heroicons/react/
 import { useRouter } from 'next/navigation';
 import { useMyGifts } from '@/hooks/useGift'; // Assurez-vous d'importer correctement useGift
 import { useEffect, useState } from 'react';
+import { useUserProfile } from '@/hooks/useUserProfile';
 
 export default function GiftListPage() {
     const router = useRouter();
-    const { data: gifts, isLoading, isError } = useMyGifts(); // Appel du hook useGift pour récupérer les cadeaux
+    const { data: gifts, isLoading: giftsIsLoading, isError: giftsIsError } = useMyGifts();
+    const { data: user, isLoading: userIsLoading, isError: userIsError } = useUserProfile();
     const [groupId, setGroupId] = useState<string | null>(null);
 
     useEffect(() => {
@@ -18,14 +20,14 @@ export default function GiftListPage() {
     }, []);
 
     const handleAddGift = () => {
-        if (groupId) {
-            router.push(`/gifts/${groupId}/create`);
+        if (groupId && user) {
+            router.push(`/gifts/${groupId}/create/${user.id}`);
         }
     };
 
 
-    if (isLoading) return <p>Chargement des cadeaux...</p>;
-    if (isError) return <p>Une erreur est survenue lors du chargement des cadeaux.</p>;
+    if (giftsIsLoading || userIsLoading) return <p>Chargement des cadeaux...</p>;
+    if (giftsIsError || userIsError) return <p>Une erreur est survenue lors du chargement des cadeaux.</p>;
 
 
 

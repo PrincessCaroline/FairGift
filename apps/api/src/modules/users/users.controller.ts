@@ -26,17 +26,20 @@ export class UsersController {
     }
 
 
+    @Get('/me')
+    @UseGuards(AuthGuard)
+    getProfile(@AuthUser() user: UserAuth) {
+        console.log('getProfile user', user);
+        return this.usersService.getUserById(Number(user.id));
+    }
+
     @Get('/:id')
     @UseGuards(AuthGuard)
     getUser(@Param("id") id: number) {
         return this.usersService.getUserById(Number(id));
     }
 
-    @Get('/me')
-    @UseGuards(AuthGuard)
-    getProfile(@AuthUser() user: UserAuth) {
-        return this.usersService.getUserById(Number(user.id));
-    }
+
 
 
 

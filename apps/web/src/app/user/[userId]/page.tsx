@@ -5,11 +5,13 @@ import HeaderGeneric from '@/components/ui/headerGeneric';
 import { useBuyGift, useUserGifts } from '@/hooks/useGift';
 import { useUser } from '@/hooks/useUserProfile';
 import { PlusIcon, StarIcon, ArrowTopRightOnSquareIcon } from '@heroicons/react/24/solid';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 
 export default function UserGiftPage() {
+    const searchParams = useSearchParams();
+    const groupId = searchParams.get('groupId');
     const router = useRouter();
     const buyGiftMutation = useBuyGift()
     const [userId, setUserId] = useState<number | null>(null);
@@ -29,7 +31,7 @@ export default function UserGiftPage() {
 
 
     const handleAddGift = () => {
-        router.push(`/gifts/${userId}/create`);
+        router.push(`/gifts/${groupId}/create/${userId}`);
     };
 
     const handleBuyGift = (giftId: number, isBuy: boolean) => {

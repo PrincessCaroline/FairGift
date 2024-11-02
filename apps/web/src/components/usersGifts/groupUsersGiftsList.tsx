@@ -13,7 +13,7 @@ export default function GroupUsersGiftsList({ groupIdSelected }: GroupUsersGifts
     const { data: groupGifts, isLoading, isError } = useGroupUsersGifts(groupIdSelected);
 
     const handleViewUserClick = (userId: number) => {
-        router.push(`/user/${userId}`);
+        router.push(`/user/${userId}?groupId=${groupIdSelected}`);
     };
 
     if (isLoading) return <p>Chargement des cadeaux...</p>;
