@@ -14,7 +14,10 @@
     "prettier": "^3.2.5",
     "tailwindcss": "^3.4.14",
     "turbo": "^2.2.3",
-    "typescript": "5.5.4"
+    "typescript": "^5.5.4",
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0"
   },
   "engines": {
     "node": ">=18"
@@ -36,9 +39,7 @@
     "dotenv": "^16.4.5",
     "install": "^0.13.0",
     "jsonwebtoken": "^9.0.2",
-    "npm": "^10.9.0",
     "pg": "^8.13.1",
-    "reflect-metadata": "^0.2.2",
     "sequelize": "^6.37.5",
     "sequelize-typescript": "^2.1.6",
     "styled-jsx": "^5.1.6"
