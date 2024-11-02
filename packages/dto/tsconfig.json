@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2021", // Définit une version moderne d'ECMAScript
+    "module": "commonjs",               // Module à utiliser
+    "declaration": true,                // Génère des fichiers .d.ts
+    "emitDeclarationOnly": false,        // Émet uniquement les déclarations (utile pour un package DTO)
+    "outDir": "./dist",                 // Dossier de sortie des fichiers compilés
+    "skipLibCheck": true,
+    "experimentalDecorators": true
+  },
+"include": ["src/**/*"]  
+}
+  

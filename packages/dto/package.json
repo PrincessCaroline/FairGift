@@ -1,0 +1,14 @@
+{
+  "name": "@repo/dto",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "generate-index": "node generate-index.ts",
+    "build": "npm run generate-index && tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
