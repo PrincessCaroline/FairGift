@@ -12,14 +12,14 @@ import { GiftModule } from './modules/gift/gift.module';
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => getDatabaseConfig(configService),
+      useFactory: (configService: ConfigService) =>
+        getDatabaseConfig(configService),
       inject: [ConfigService],
-
     }),
     LoginModule,
     UsersModule,
     GroupModule,
-    GiftModule
+    GiftModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}

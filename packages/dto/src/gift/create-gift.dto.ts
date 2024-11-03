@@ -1,17 +1,17 @@
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional, IsNumber } from "class-validator";
 
 export class CreateGiftDto {
-    @IsString()
-    name: string;
+  @IsString()
+  name: string;
 
-    @IsNumber()
-    ownerId: number;
+  @IsNumber()
+  ownerId: number;
 
-    @IsString()
-    @IsOptional()
-    description?: string;
+  @IsString()
+  @IsOptional()
+  description?: string;
 
-    @IsString()
-    @IsOptional()
-    purchaseLink?: string;
+  @IsString()
+  @IsOptional()
+  purchaseLink?: string;
 }

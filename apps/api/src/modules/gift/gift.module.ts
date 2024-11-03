@@ -9,7 +9,6 @@ import { GroupModule } from '../group/group.module';
 @Module({
   imports: [SequelizeModule.forFeature([Gift, GiftBuyer]), GroupModule],
   controllers: [GiftController],
-  providers: [GiftService]
+  providers: [GiftService],
 })
-
-export class GiftModule { }
+export class GiftModule {}

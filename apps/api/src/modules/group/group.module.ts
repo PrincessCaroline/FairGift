@@ -7,12 +7,9 @@ import { GroupUsers } from './modeles/group-users.model';
 import { UsersModule } from '../users/users.module';
 
 @Module({
-  imports: [
-    SequelizeModule.forFeature([Group, GroupUsers]),
-    UsersModule
-  ],
+  imports: [SequelizeModule.forFeature([Group, GroupUsers]), UsersModule],
   controllers: [GroupController],
   providers: [GroupService],
   exports: [GroupService],
 })
-export class GroupModule { }
+export class GroupModule {}

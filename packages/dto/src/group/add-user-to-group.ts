@@ -1,11 +1,11 @@
-import { IsEnum } from 'class-validator';
+import { IsEnum } from "class-validator";
 
 export enum Role {
-    OWNER = 'owner',
-    MEMBER = 'member',
+  OWNER = "owner",
+  MEMBER = "member",
 }
 
 export class AddUserToGroupDto {
-    @IsEnum(Role)
-    role: Role;
+  @IsEnum(Role)
+  role: Role;
 }
