@@ -5,6 +5,7 @@ import { GiftBuyer } from './modeles/gift-buyer.model';
 import { BuyerDto, CreateGiftDto, GiftDto, GroupUsersGiftDto, PurchaseStatus } from '@repo/dto';
 import { User } from '../users/modeles/users.model';
 import { GroupService } from '../group/group.service';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class GiftService {
@@ -28,17 +29,27 @@ export class GiftService {
         });
     }
 
-    async getUserGifts(userId: number): Promise<GiftDto[]> {
+    async getUserGifts(userId: number, isMe: boolean): Promise<GiftDto[]> {
         const gifts = await this.giftModel.findAll({
-            where: { ownerId: userId },
-            include: [{
-                model: User,
-                as: 'buyers',
-                through: { attributes: ['status'] }  // Spécifiez les attributs de la table de jointure GiftBuyer
-            }]
+            where: !isMe ? { ownerId: userId } : {
+                [Op.and]: [
+                    { creatorId: userId },
+                    { ownerId: userId }
+                ]
+            },
+            include: [
+                {
+                    model: User,
+                    as: 'buyers',
+                    through: { attributes: ['status'] }  // Spécifiez les attributs de la table de jointure GiftBuyer
+                },
+                {
+                    model: User,
+                    as: 'owner',  // Inclut également l'information sur le propriétaire
+                    attributes: ['id', 'name']  // Inclure seulement les attributs nécessaires
+                },
+            ]
         });
-
-        console.log("gifts", JSON.stringify(gifts, null, 4))
 
         return gifts.map((gift) => new GiftDto({
             id: gift.id,

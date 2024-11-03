@@ -1,17 +1,23 @@
 "use client";
 
-import HeaderGeneric from '@/components/ui/headerGeneric';
-import { StarIcon, ArrowTopRightOnSquareIcon, PlusIcon } from '@heroicons/react/24/solid';
-import { useRouter } from 'next/navigation';
-import { useMyGifts } from '@/hooks/useGift'; // Assurez-vous d'importer correctement useGift
 import { useEffect, useState } from 'react';
+import HeaderGeneric from '@/components/ui/headerGeneric';
+import { StarIcon, ArrowTopRightOnSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/solid';
+import { useRouter } from 'next/navigation';
+import { useDeleteGift, useMyGifts } from '@/hooks/useGift';
 import { useUserProfile } from '@/hooks/useUserProfile';
+import DeleteModal from '@/components/ui/deleteModal';
+import InfoModal from '@/components/ui/infoModale';
 
 export default function GiftListPage() {
     const router = useRouter();
     const { data: gifts, isLoading: giftsIsLoading, isError: giftsIsError } = useMyGifts();
     const { data: user, isLoading: userIsLoading, isError: userIsError } = useUserProfile();
+    const deleteGift = useDeleteGift();
     const [groupId, setGroupId] = useState<string | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const [giftToDelete, setGiftToDelete] = useState<number | null>(null);
 
     useEffect(() => {
         const pathSegments = window.location.pathname.split('/');
@@ -19,17 +25,36 @@ export default function GiftListPage() {
         setGroupId(id);
     }, []);
 
+    const openDeleteModal = (giftId: number) => {
+        setGiftToDelete(giftId);
+        setIsDeleteModalOpen(true);
+    };
+
+    const closeDeleteModal = () => {
+        setGiftToDelete(null);
+        setIsDeleteModalOpen(false);
+    };
+
+
+
+    const handleConfirmDelete = () => {
+        if (giftToDelete) {
+            deleteGift.mutate(giftToDelete, {
+                onSuccess: () => {
+                    closeDeleteModal();
+                }
+            });
+        }
+    };
+
     const handleAddGift = () => {
         if (groupId && user) {
             router.push(`/gifts/${groupId}/create/${user.id}`);
         }
     };
 
-
     if (giftsIsLoading || userIsLoading) return <p>Chargement des cadeaux...</p>;
     if (giftsIsError || userIsError) return <p>Une erreur est survenue lors du chargement des cadeaux.</p>;
-
-
 
     return (
         <div className="min-h-screen bg-white">
@@ -45,9 +70,15 @@ export default function GiftListPage() {
                                 <StarIcon className="h-5 w-5" />
                                 <span>{gift.name}</span>
                             </div>
-                            {gift.purchaseLink && (
-                                <ArrowTopRightOnSquareIcon className="h-5 w-5 cursor-pointer" />
-                            )}
+                            <div className="flex items-center space-x-2">
+                                {gift.purchaseLink && (
+                                    <ArrowTopRightOnSquareIcon className="h-5 w-5 cursor-pointer" />
+                                )}
+                                <TrashIcon
+                                    className="h-5 w-5 cursor-pointer"
+                                    onClick={() => gift.buyers.length > 0 ? setIsInfoModalOpen(true) : openDeleteModal(gift.id)}
+                                />
+                            </div>
                         </div>
                     ))}
                 </div>
@@ -59,6 +90,21 @@ export default function GiftListPage() {
                     <PlusIcon className="h-5 w-5 mr-2" /> Ajouter un cadeau
                 </button>
             </div>
+
+            <DeleteModal
+                isOpen={isDeleteModalOpen}
+                onClose={closeDeleteModal}
+                onConfirm={handleConfirmDelete}
+                title="Confirmer la suppression"
+                message="Êtes-vous sûr de vouloir supprimer ce cadeau ?"
+            />
+
+            <InfoModal
+                isOpen={isInfoModalOpen}
+                onClose={() => setIsInfoModalOpen(false)}
+                title="Impossible de suppimer ce cadeau"
+                message="Le cadeau ne peut pas être supprimé car il a déjà été acheté par un utilisateur."
+            />
         </div>
     );
 }

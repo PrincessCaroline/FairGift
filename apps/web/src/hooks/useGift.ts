@@ -57,10 +57,16 @@ export function useGroupUsersGifts(groupId: number) {
 }
 
 export function useDeleteGift() {
+    const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: async (giftId: number) => {
             const response = await apiClient.delete(`/gift/${giftId}`);
             return response.data;
         },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['myGifts'] });
+        }
+
     });
 }

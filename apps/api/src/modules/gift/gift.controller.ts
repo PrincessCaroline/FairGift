@@ -30,13 +30,13 @@ export class GiftController {
     @Get('user/:userId')
     @UseGuards(AuthGuard)
     async getUserGifts(@Param('userId') userId: number,) {
-        return this.giftService.getUserGifts(Number(userId));
+        return this.giftService.getUserGifts(Number(userId), false);
     }
 
     @Get('me')
     @UseGuards(AuthGuard)
     async getMyGifts(@AuthUser() user: UserAuth,) {
-        return this.giftService.getUserGifts(Number(user.id));
+        return this.giftService.getUserGifts(Number(user.id), true);
     }
 
 
