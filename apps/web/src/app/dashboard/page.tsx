@@ -11,7 +11,7 @@ import { useMyGifts } from "@/hooks/useGift";
 export default function DashboardPage() {
   const router = useRouter();
   const { data: groups, isLoading, isError } = useGroups();
-  const {data: gifts,} = useMyGifts();
+  const { data: gifts } = useMyGifts();
 
   const [groupIdSelected, setGroupIdSelected] = useState<number>(-1);
 
@@ -41,7 +41,10 @@ export default function DashboardPage() {
       <div className="min-h-screen bg-white ">
         <ProgressBar totalGifts={gifts?.length ?? 0} goalGifts={goalGifts} />
         {groupIdSelected >= 0 ? (
-          <GroupUsersGiftsList groupIdSelected={groupIdSelected} canPickGift={canPickGift}/>
+          <GroupUsersGiftsList
+            groupIdSelected={groupIdSelected}
+            canPickGift={canPickGift}
+          />
         ) : null}
       </div>
     </div>

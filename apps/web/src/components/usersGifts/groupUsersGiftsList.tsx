@@ -9,12 +9,12 @@ import { useRouter } from "next/navigation";
 
 type GroupUsersGiftsListProps = {
   groupIdSelected: number;
-  canPickGift: boolean
+  canPickGift: boolean;
 };
 
 export default function GroupUsersGiftsList({
   groupIdSelected,
-  canPickGift
+  canPickGift,
 }: GroupUsersGiftsListProps) {
   const router = useRouter();
   const {
