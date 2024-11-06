@@ -1,8 +1,8 @@
 import { useGroupUsersGifts } from "@/hooks/useGift";
 import {
   StarIcon,
-  PencilSquareIcon,
   PlusIcon,
+  ArrowTopRightOnSquareIcon,
 } from "@heroicons/react/24/solid";
 import { GiftDto, GroupUsersGiftDto } from "@repo/dto";
 import { useRouter } from "next/navigation";
@@ -36,28 +36,37 @@ export default function GroupUsersGiftsList({
       {groupGifts?.map((userGift: GroupUsersGiftDto) => (
         <div key={userGift.userId} className="p-4 bg-white shadow rounded-lg">
           <div className="flex items-center mb-4">
-            <div className="w-12 h-12 bg-gray-200 rounded-full" />
-            <h2 className="ml-4 text-lg font-semibold">{userGift.userName}</h2>
+            <div className="w-12 h-12 bg-gray-500 rounded-full" />
+            <h2 className="ml-4 text-lg font-semibold text-gray-500 capitalize">
+              {userGift.userName}
+            </h2>
           </div>
           <div className="space-y-2">
             {userGift.gifts.map((gift: GiftDto) => (
               <div
                 key={gift.id}
-                className={`flex items-center justify-between px-4 py-2 rounded-full  bg-purple-500`}
+                className={`flex items-center justify-between px-4 py-2 rounded-full bg-purple-500`}
               >
                 <div className="flex items-center text-white">
                   <StarIcon className="w-5 h-5 mr-2" />
-                  <span>{gift.name}</span>
+                  <span className="capitalize">{gift.name}</span>
                 </div>
-                <PencilSquareIcon className="w-5 h-5 text-white" />
+                {gift.purchaseLink && (
+                  <ArrowTopRightOnSquareIcon className="h-5 w-5 cursor-pointer" />
+                )}
               </div>
             ))}
           </div>
+
           <button
-            className="mt-4 flex items-center text-gray-600 hover:text-gray-800"
+            disabled={!canPickGift}
+            className="mt-6 flex items-center justify-between px-4 py-2 rounded-full bg-gray-400 w-full"
             onClick={() => handleViewUserClick(userGift.userId)}
           >
-            <PlusIcon className="w-5 h-5 mr-2" /> Ajouter un cadeau
+            <div className="flex items-center text-white">
+              <PlusIcon className="w-5 h-5 mr-2" />
+              <span> Ajouter un cadeau</span>
+            </div>
           </button>
         </div>
       ))}

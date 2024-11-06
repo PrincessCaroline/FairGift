@@ -18,6 +18,8 @@ export class GiftDto {
   name: string;
   description?: string;
   purchaseLink?: string;
+  creatorName: string;
+  creatorId: number;
   ownerId: number;
   createdAt: Date;
   updatedAt: Date;

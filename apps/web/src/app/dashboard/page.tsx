@@ -29,7 +29,7 @@ export default function DashboardPage() {
   if (isLoading || !groups) return <p>Loading...</p>;
 
   const goalGifts = groups.reduce((acc, group) => acc + group.memberCount, 0);
-  const canPickGift = gifts?.length ?? 0 >= goalGifts;
+  const canPickGift = (gifts?.length ?? 0) >= goalGifts;
 
   return (
     <div>

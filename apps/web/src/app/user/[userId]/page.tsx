@@ -3,11 +3,7 @@
 import HeaderGeneric from "@/components/ui/headerGeneric";
 import { useBuyGift, useUserGifts } from "@/hooks/useGift";
 import { useUser } from "@/hooks/useUserProfile";
-import {
-  PlusIcon,
-  StarIcon,
-  ArrowTopRightOnSquareIcon,
-} from "@heroicons/react/24/solid";
+import { PlusIcon, ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -49,10 +45,8 @@ export default function UserGiftPage() {
     }
   };
 
-  console.log("gifts", gifts);
-
   if (giftIsLoading || userIsLoading) return <p>Chargement des cadeaux...</p>;
-  if (giftIsError || userIsError)
+  if (giftIsError || userIsError || !user)
     return <p>Erreur lors du chargement des cadeaux.</p>;
 
   return (
@@ -60,45 +54,80 @@ export default function UserGiftPage() {
       <HeaderGeneric name="Echanger une idée de cadeau" />
       <div className="py-10">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-20 h-20 bg-gray-300 rounded-full mb-4"></div>
-          <h1 className="text-xl font-semibold">{user?.name}</h1>
+          <div className="w-20 h-20 bg-gray-500 rounded-full mb-4"></div>
+          <h1 className="text-xl font-semibold text-gray-500 capitalize">
+            {user?.name}
+          </h1>
         </div>
 
         <div className="w-full max-w-md px-6 space-y-4">
-          {gifts?.map((gift) => (
-            <div
-              key={gift.id}
-              className={`flex items-center justify-between px-4 py-2 rounded-full  text-white ${
-                gift.buyers.length > 0 ? "bg-red-400" : "bg-purple-600"
-              }`}
-              onClick={() => handleBuyGift(gift.id, gift.buyers.length > 0)}
-            >
-              <div className="flex items-center space-x-2">
-                <StarIcon className="w-5 h-5" />
-                <span>{gift.name}</span>
+          <p className="text-gray-500">Disponible :</p>
+          {gifts
+            ?.filter((gift) => gift.buyers.length === 0)
+            .map((gift) => (
+              <div
+                key={gift.id}
+                className={`flex items-center justify-between px-4 py-2 rounded-full text-white ${gift.creatorId === Number(user.id) ? "bg-purple-600" : "bg-pink-600"}`}
+                onClick={() => handleBuyGift(gift.id, gift.buyers.length > 0)}
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="capitalize">{gift.name}</span>
+                  {gift.creatorId !== Number(user.id) ? (
+                    <span className="text-xs">
+                      Idée de{" "}
+                      <span className="capitalize">{gift.creatorName}</span>
+                    </span>
+                  ) : null}
+                </div>
+                {gift.purchaseLink && (
+                  <a
+                    href={gift.purchaseLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ArrowTopRightOnSquareIcon className="w-5 h-5 cursor-pointer" />
+                  </a>
+                )}
               </div>
-              {gift.purchaseLink && (
-                <a
-                  href={gift.purchaseLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <ArrowTopRightOnSquareIcon className="w-5 h-5 cursor-pointer" />
-                </a>
-              )}
-            </div>
-          ))}
+            ))}
 
-          <div className="flex items-center justify-center text-gray-600 font-semibold">
-            OU
-          </div>
+          <p className="text-gray-500">Déja pris:</p>
+          {gifts
+            ?.filter((gift) => gift.buyers.length > 0)
+            .map((gift) => (
+              <div
+                key={gift.id}
+                className={`flex items-center justify-between px-4 py-2 rounded-full  text-white bg-gray-400
+              `}
+                onClick={() => handleBuyGift(gift.id, gift.buyers.length > 0)}
+              >
+                <div className="flex items-center space-x-2">
+                  <span className="capitalize">{gift.name}</span>
+                  {gift.creatorId !== Number(user.id) ? (
+                    <span className="text-xs">
+                      Idée de{" "}
+                      <span className="capitalize">{gift.creatorName}</span>
+                    </span>
+                  ) : null}
+                </div>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="capitalize bg-gray-500 text-gray-300 text-sm rounded-full px-2 py-0.5">
+                    {gift.buyers.map((buyer) => buyer.name).join(", ")}
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
 
+        <div className="w-full max-w-md px-6 space-y-4 mt-10">
           <button
+            className="flex items-center justify-between px-4 py-2 rounded-full bg-gray-400 w-full"
             onClick={handleAddGift}
-            className="flex items-center justify-center w-full px-4 py-3 bg-pink-500 text-white font-semibold rounded-full"
           >
-            <PlusIcon className="w-5 h-5 mr-2" />
-            Ajoute ta propre idée de cadeau
+            <div className="flex items-center text-white">
+              <PlusIcon className="w-5 h-5 mr-2" />
+              <span>Ajoute ta propre idée de cadeau</span>
+            </div>
           </button>
         </div>
       </div>

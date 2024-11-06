@@ -17,10 +17,15 @@ export function useCreateGift() {
 }
 
 export function useBuyGift() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: async (giftId: number) => {
       const response = await apiClient.post(`/gift/${giftId}/buy`);
       return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userGifts"] });
     },
   });
 }

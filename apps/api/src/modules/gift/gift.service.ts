@@ -12,6 +12,7 @@ import {
 import { User } from '../users/modeles/users.model';
 import { GroupService } from '../group/group.service';
 import { Op } from 'sequelize';
+import { console } from 'inspector';
 
 @Injectable()
 export class GiftService {
@@ -38,7 +39,7 @@ export class GiftService {
     });
   }
 
-  async getUserGifts(userId: number, isMe: boolean): Promise<GiftDto[]> {
+  async getUserGifts(userId: number, isMe: boolean): Promise<GiftDto[]> {   
     const gifts = await this.giftModel.findAll({
       where: !isMe
         ? { ownerId: userId }
@@ -56,6 +57,11 @@ export class GiftService {
           as: 'owner', // Inclut également l'information sur le propriétaire
           attributes: ['id', 'name'], // Inclure seulement les attributs nécessaires
         },
+        {
+          model: User,
+          as: 'creator', // Inclut également l'information sur le propriétaire
+          attributes: ['id', 'name'], // Inclure seulement les attributs nécessaires
+        },
       ],
     });
 
@@ -67,6 +73,8 @@ export class GiftService {
           description: gift.description ?? '',
           purchaseLink: gift.purchaseLink ?? '',
           ownerId: gift.ownerId,
+          creatorName: gift.creator.name,
+          creatorId: gift.creator.id,
           createdAt: gift.createdAt,
           updatedAt: gift.updatedAt,
           buyers: gift.buyers.map(
@@ -137,7 +145,10 @@ export class GiftService {
             id: gift.id,
             name: gift.name,
             description: gift.description,
+            purchaseLink: gift.purchaseLink,
             ownerId: gift.ownerId,
+            creatorName: '',
+            creatorId: -1,
             createdAt: gift.createdAt,
             updatedAt: gift.updatedAt,
             buyers: giftBuyers,

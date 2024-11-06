@@ -84,7 +84,13 @@ export default function GiftListPage() {
               </div>
               <div className="flex items-center space-x-2">
                 {gift.purchaseLink && (
-                  <ArrowTopRightOnSquareIcon className="h-5 w-5 cursor-pointer" />
+                  <a
+                    href={gift.purchaseLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <ArrowTopRightOnSquareIcon className="w-5 h-5 cursor-pointer" />
+                  </a>
                 )}
                 <TrashIcon
                   className="h-5 w-5 cursor-pointer"
