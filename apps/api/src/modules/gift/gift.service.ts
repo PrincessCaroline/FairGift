@@ -12,7 +12,6 @@ import {
 import { User } from '../users/modeles/users.model';
 import { GroupService } from '../group/group.service';
 import { Op } from 'sequelize';
-import { console } from 'inspector';
 
 @Injectable()
 export class GiftService {
@@ -39,7 +38,32 @@ export class GiftService {
     });
   }
 
-  async getUserGifts(userId: number, isMe: boolean): Promise<GiftDto[]> {   
+  async getGift(giftId: number): Promise<GiftDto> {
+    const gift = await this.giftModel.findByPk(giftId, {
+      include: [
+        { association: 'creator' }, // Assure-toi que le nom de l'association est correct
+        { association: 'buyers' }, // Inclure les acheteurs si nécessaire
+      ],
+    });
+
+    if (!gift) {
+      throw new NotFoundException('Gift not found');
+    }
+    return new GiftDto({
+      id: gift.id,
+      name: gift.name,
+      description: gift.description ?? '',
+      purchaseLink: gift.purchaseLink ?? '',
+      ownerId: gift.ownerId,
+      creatorName: '',
+      creatorId: gift.creator.id,
+      createdAt: gift.createdAt,
+      updatedAt: gift.updatedAt,
+      buyers: [],
+    });
+  }
+
+  async getUserGifts(userId: number, isMe: boolean): Promise<GiftDto[]> {
     const gifts = await this.giftModel.findAll({
       where: !isMe
         ? { ownerId: userId }
@@ -119,6 +143,21 @@ export class GiftService {
     }
 
     await giftBuyer.save();
+  }
+
+  async cancelBuyGift(giftId: number, userId: number): Promise<void> {
+    const deletedCount = await this.giftBuyerModel.destroy({
+      where: {
+        giftId: giftId,
+        userId: userId,
+      },
+    });
+
+    if (deletedCount === 0) {
+      throw new NotFoundException(
+        'GiftBuyer not found with the specified giftId and userId',
+      );
+    }
   }
 
   async getGroupUsersGifts(

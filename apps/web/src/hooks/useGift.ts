@@ -51,6 +51,17 @@ export function useMyGifts() {
   });
 }
 
+export function useGift(giftId: number | null) {
+  return useQuery({
+    queryKey: ["gift", giftId],
+    queryFn: async () => {
+      const response = await apiClient.get<GiftDto>(`/gift/${giftId}`);
+      return response.data;
+    },
+    enabled: !!giftId,
+  });
+}
+
 export function useGroupUsersGifts(groupId: number) {
   return useQuery({
     queryKey: ["groupGifts", groupId],
@@ -73,6 +84,20 @@ export function useDeleteGift() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["myGifts"] });
+    },
+  });
+}
+
+export function useCancelBuyGift() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (giftId: number) => {
+      const response = await apiClient.delete(`/gift/cancelBuyGif/${giftId}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userGifts"] });
     },
   });
 }

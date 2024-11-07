@@ -107,7 +107,7 @@ export default function GiftListPage() {
 
         <button
           onClick={handleAddGift}
-          className="flex items-center mt-6 px-4 py-2 bg-pink-500 text-white font-semibold rounded-full"
+          className="flex items-center mt-6 px-4 py-2 bg-pink-500 text-white font-semibold rounded-full w-full"
         >
           <PlusIcon className="h-5 w-5 mr-2" /> Ajouter un cadeau
         </button>

@@ -58,7 +58,7 @@ export default function Modal({
             leaveTo="opacity-0 scale-95"
           >
             <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-lg">
-              <h3 className="text-lg font-medium leading-6 text-gray-900">
+              <h3 className="text-lg font-medium leading-6 text-gray-800">
                 {title}
               </h3>
               <div className="mt-2">
@@ -75,7 +75,7 @@ export default function Modal({
                 </button>
                 <button
                   type="button"
-                  className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-600 rounded-md hover:bg-red-700"
+                  className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-pink-600 rounded-md hover:bg-pink-700"
                   onClick={onConfirm}
                 >
                   Confirmer

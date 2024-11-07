@@ -49,6 +49,12 @@ export class GiftController {
     return this.giftService.getUserGifts(Number(user.id), true);
   }
 
+  @Get(':id')
+  @UseGuards(AuthGuard)
+  async getGift(@Param('id') giftId: number) {
+    return this.giftService.getGift(giftId);
+  }
+
   @Get('group/:groupId')
   @UseGuards(AuthGuard)
   async getGroupUsersGifts(
@@ -56,6 +62,13 @@ export class GiftController {
     @Param('groupId') groupId: number,
   ) {
     return this.giftService.getGroupUsersGifts(Number(user.id), groupId);
+  }
+
+  @Delete('cancelBuyGif/:id')
+  @UseGuards(AuthGuard)
+  async cancelBuyGift(@AuthUser() user: UserAuth, @Param('id') giftId: number) {
+    await this.giftService.cancelBuyGift(giftId, Number(user.id));
+    return { message: 'Gift purchase cancelled successfully' };
   }
 
   @Delete(':id')

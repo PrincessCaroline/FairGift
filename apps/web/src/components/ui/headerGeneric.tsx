@@ -10,7 +10,6 @@ export default function HeaderGeneric({ name, url }: headerGenericProps) {
   const router = useRouter();
 
   const goBack = () => {
-    console.log("url", url);
     router.push(url ?? "/dashboard");
   };
 

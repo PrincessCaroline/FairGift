@@ -39,7 +39,6 @@ export class UsersController {
   @Get('/me')
   @UseGuards(AuthGuard)
   getProfile(@AuthUser() user: UserAuth) {
-    console.log('getProfile user', user);
     return this.usersService.getUserById(Number(user.id));
   }
 
