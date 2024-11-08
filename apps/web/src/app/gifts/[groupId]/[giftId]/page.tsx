@@ -5,25 +5,46 @@ import DeleteModal from "@/components/ui/deleteModal";
 import HeaderGeneric from "@/components/ui/headerGeneric";
 import {
   ArrowTopRightOnSquareIcon,
+  PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
-import { useGift } from "@/hooks/useGift";
+import { useBuyGift, useCancelBuyGift, useGift } from "@/hooks/useGift";
+import { useRouter } from "next/navigation";
+import { useUserProfile } from "@/hooks/useUserProfile";
 
 export default function GiftPage() {
-  // const [groupId, setGroupId] = useState<number | null>(null);
+  const router = useRouter();
   const [giftId, setGiftId] = useState<number | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-
+  const buyGiftMutation = useBuyGift();
+  const cancelBuyGiftMutation = useCancelBuyGift();
+  const {
+    data: user,
+    isLoading: userIsLoading,
+    isError: userIsError,
+  } = useUserProfile();
   const { data: gift, isLoading, isError } = useGift(giftId);
 
   useEffect(() => {
     const pathSegments = window.location.pathname.split("/");
-    // setGroupId(pathSegments[2]);
     if (pathSegments[3]) setGiftId(Number(pathSegments[3]));
   }, []);
 
-  if (isLoading || !gift) return <p>Chargement du cadeau...</p>;
-  if (isError)
+  const cancelBuyGift = async (giftId: number) => {
+    await cancelBuyGiftMutation.mutateAsync(giftId);
+    router.back();
+  };
+
+  const handleBuyGift = () => {
+    if (giftId) {
+      buyGiftMutation.mutate(giftId);
+      router.back();
+    }
+  };
+
+  if (isLoading || userIsLoading || !gift || !user)
+    return <p>Chargement du cadeau...</p>;
+  if (isError || userIsError)
     return <p>Une erreur est survenue lors du chargement du cadeau.</p>;
 
   return (
@@ -49,20 +70,36 @@ export default function GiftPage() {
               href={gift.purchaseLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-700 flex items-center gap-1"
+              className="flex items-center gap-2 px-4 py-2 mt-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-200 ease-in-out"
             >
-              Lien d'achat{" "}
-              <ArrowTopRightOnSquareIcon className="h-5 w-5 mr-2" />{" "}
+              Lien d'achat
+              <ArrowTopRightOnSquareIcon className="h-5 w-5" />
             </a>
           )}
+          {gift.description && (
+            <div className="description-block bg-gray-50 border border-gray-200 rounded-lg p-4 text-gray-700 shadow-sm">
+              <p>{gift.description}</p>
+            </div>
+          )}
 
-          <p className="text-gray-700">{gift.description}</p>
-          <button
-            onClick={() => setIsDeleteModalOpen(true)}
-            className="flex items-center mt-6 px-4 py-2 bg-pink-500 text-white font-semibold rounded-full w-full"
-          >
-            <TrashIcon className="h-5 w-5 mr-2" /> Je ne l'achète plus
-          </button>
+          {gift.buyers[0] &&
+            user.id.toString() === gift.buyers[0].userId.toString() && (
+              <button
+                onClick={() => setIsDeleteModalOpen(true)}
+                className="flex items-center mt-6 px-4 py-2 bg-pink-500 text-white font-semibold rounded-full w-full"
+              >
+                <TrashIcon className="h-5 w-5 mr-2" /> Je ne l'achète plus
+              </button>
+            )}
+
+          {gift.buyers.length === 0 && (
+            <button
+              onClick={() => handleBuyGift()}
+              className="flex items-center mt-6 px-4 py-2 bg-pink-500 text-white font-semibold rounded-full w-full"
+            >
+              <PlusIcon className="h-5 w-5 mr-2" /> Je le prend
+            </button>
+          )}
         </div>
       </div>
 
@@ -70,7 +107,7 @@ export default function GiftPage() {
         <DeleteModal
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={() => console.log("Cadeau supprimé")}
+          onConfirm={() => cancelBuyGift(gift.id)}
           title="Confirmer la suppression"
           message="Êtes-vous sûr de vouloir supprimer ce cadeau ?"
         />

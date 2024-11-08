@@ -3,7 +3,12 @@
 import HeaderGeneric from "@/components/ui/headerGeneric";
 import { useBuyGift, useUserGifts } from "@/hooks/useGift";
 import { useUser } from "@/hooks/useUserProfile";
-import { PlusIcon, ArrowTopRightOnSquareIcon } from "@heroicons/react/24/solid";
+import {
+  ArrowTopRightOnSquareIcon,
+  EyeIcon,
+  PencilIcon,
+  PlusIcon,
+} from "@heroicons/react/24/solid";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -45,12 +50,18 @@ export default function UserGiftPage() {
     }
   };
 
+  const viewGift = (giftId: number) => {
+    router.push(`/gifts/${groupId}/${giftId}`);
+  };
+
   if (giftIsLoading || userIsLoading) return <p>Chargement des cadeaux...</p>;
   if (giftIsError || userIsError || !user)
     return <p>Erreur lors du chargement des cadeaux.</p>;
 
+  // gifts?.length dispo et creator me > nombre de membre -1
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-5">
       <HeaderGeneric name="Echanger une idée de cadeau" />
       <div className="py-10">
         <div className="flex flex-col items-center mb-8">
@@ -64,13 +75,30 @@ export default function UserGiftPage() {
           <p className="text-gray-500">Disponible :</p>
           {gifts
             ?.filter((gift) => gift.buyers.length === 0)
+            .sort((a, b) => {
+              if (
+                a.creatorId === Number(user.id) &&
+                b.creatorId !== Number(user.id)
+              )
+                return -1;
+              if (
+                a.creatorId !== Number(user.id) &&
+                b.creatorId === Number(user.id)
+              )
+                return 1;
+              return 0;
+            })
             .map((gift) => (
               <div
                 key={gift.id}
-                className={`flex items-center justify-between px-4 py-2 rounded-full text-white ${gift.creatorId === Number(user.id) ? "bg-purple-600" : "bg-pink-600"}`}
+                className={`flex items-center justify-between px-4 py-2 rounded-full text-white ${
+                  gift.creatorId === Number(user.id)
+                    ? "bg-purple-600"
+                    : "bg-pink-600"
+                }`}
                 onClick={() => handleBuyGift(gift.id, gift.buyers.length > 0)}
               >
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-2 w-90">
                   <span className="capitalize">{gift.name}</span>
                   {gift.creatorId !== Number(user.id) ? (
                     <span className="text-xs">
@@ -79,15 +107,23 @@ export default function UserGiftPage() {
                     </span>
                   ) : null}
                 </div>
-                {gift.purchaseLink && (
-                  <a
-                    href={gift.purchaseLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <div
+                  className="flex items-center justify-between gap-2"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    viewGift(gift.id); 
+                  }}
+                >
+                  <div
+                    className={`capitalize bg-white text-sm rounded-full px-1 py-1 ${
+                      gift.creatorId === Number(user.id)
+                        ? "text-purple-600"
+                        : "text-pink-600"
+                    }`}
                   >
-                    <ArrowTopRightOnSquareIcon className="w-5 h-5 cursor-pointer" />
-                  </a>
-                )}
+                    <EyeIcon className="w-5 h-5 cursor-pointer" />
+                  </div>
+                </div>
               </div>
             ))}
 
@@ -97,9 +133,9 @@ export default function UserGiftPage() {
             .map((gift) => (
               <div
                 key={gift.id}
-                className={`flex items-center justify-between px-4 py-2 rounded-full  text-white bg-gray-400
+                className={`flex items-center justify-between px-4 py-2 rounded-full text-white bg-gray-400
               `}
-                onClick={() => handleBuyGift(gift.id, gift.buyers.length > 0)}
+                onClick={() =>  viewGift(gift.id)}
               >
                 <div className="flex items-center space-x-2">
                   <span className="capitalize">{gift.name}</span>

@@ -40,10 +40,7 @@ export class GiftService {
 
   async getGift(giftId: number): Promise<GiftDto> {
     const gift = await this.giftModel.findByPk(giftId, {
-      include: [
-        { association: 'creator' }, // Assure-toi que le nom de l'association est correct
-        { association: 'buyers' }, // Inclure les acheteurs si nécessaire
-      ],
+      include: [{ association: 'creator' }, { association: 'buyers' }],
     });
 
     if (!gift) {
@@ -59,7 +56,14 @@ export class GiftService {
       creatorId: gift.creator.id,
       createdAt: gift.createdAt,
       updatedAt: gift.updatedAt,
-      buyers: [],
+      buyers: gift.buyers.map(
+        (buyer) =>
+          new BuyerDto({
+            userId: buyer.id,
+            name: buyer.name,
+            status: (buyer as any).GiftBuyer.status,
+          }),
+      ),
     });
   }
 
