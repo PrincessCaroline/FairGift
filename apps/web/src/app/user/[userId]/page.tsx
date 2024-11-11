@@ -119,11 +119,10 @@ export default function UserGiftPage() {
       {/* Bouton sticky en bas */}
       <div className="bg-white w-full max-w-md px-6 py-4 mx-auto sticky bottom-0">
         <GenericButton
-              text="Ajoute ta propre idée de cadeau"
-              Icon={PlusCircleIcon}
-              onClick={handleAddGift}
-
-            />
+          text="Ajoute ta propre idée de cadeau"
+          Icon={PlusCircleIcon}
+          onClick={handleAddGift}
+        />
       </div>
     </div>
   );
