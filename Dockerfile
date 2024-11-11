@@ -24,12 +24,18 @@ FROM node:18 AS runner
 
 WORKDIR /app
 
-# Copier les fichiers buildés et les dépendances de production de `@repo/api`
+# Copier les fichiers buildés pour `@repo/api`
 COPY --from=builder /app/apps/api/dist ./dist
 COPY --from=builder /app/apps/api/package.json ./
+
+# Copier les fichiers buildés de `@repo/dto` dans `node_modules`
+COPY --from=builder /app/packages/dto/dist ./node_modules/@repo/dto/dist
+
+# Copier les dépendances de production de la racine pour `@repo/api`
 COPY --from=builder /app/node_modules ./node_modules
 
 # Exposer le port de l'API
 EXPOSE 3000
 
+# Démarrer l'application en production
 CMD ["node", "dist/main.js"]
