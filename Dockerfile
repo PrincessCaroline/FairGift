@@ -1,18 +1,17 @@
-# Étape 1 : Builder les dépendances
+# Étape 1 : Builder les dépendances et les packages pour API uniquement
 FROM node:18 AS builder
 
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier tout le monorepo dans le conteneur
+# Copier tous les fichiers du monorepo dans le conteneur
 COPY . .
 
-# Installer Turborepo globalement
-RUN npm install -g turbo
+# Installer les dépendances uniquement pour `@repo/api` et les packages partagés
+RUN npm install --workspace=apps/api --legacy-peer-deps
 
-# Installer les dépendances et builder uniquement les packages nécessaires
-RUN npm install && \
-    npm run build:api-prod
+# Builder `@repo/api` et ses dépendances nécessaires
+RUN npm run build:api-prod
 
 # Étape 2 : Créer une image finale optimisée
 FROM node:18 AS runner
@@ -20,15 +19,10 @@ FROM node:18 AS runner
 # Définir le répertoire de travail
 WORKDIR /app
 
-# Copier les fichiers de `dist` de `@repo/api` et `@repo/dto` nécessaires pour l'exécution
+# Copier les fichiers buildés et les dépendances de production de `@repo/api`
 COPY --from=builder /app/apps/api/dist ./dist
-COPY --from=builder /app/packages/dto/dist ./node_modules/@repo/dto/dist
-
-# Copier les fichiers de configuration nécessaires
 COPY --from=builder /app/apps/api/package.json ./
-
-# Installer uniquement les dépendances de production pour l'API
-RUN npm install --only=production
+COPY --from=builder /app/node_modules ./node_modules
 
 # Exposer le port de l'API
 EXPOSE 3000
