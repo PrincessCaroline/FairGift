@@ -24,11 +24,7 @@ WORKDIR /app
 COPY --from=builder /app/apps/api/dist ./dist
 COPY --from=builder /app/apps/api/package.json ./
 
-# Copier le dossier dist de `@repo/dto` dans `node_modules/@repo/dto/dist`
-RUN mkdir -p ./node_modules/@repo/dto
-COPY --from=builder /app/packages/dto/dist ./node_modules/@repo/dto/dist
-
-# Copier l'intégralité de `node_modules` pour toutes les dépendances
+# Copier l'intégralité de `node_modules` pour toutes les dépendances, incluant `@repo/dto`
 COPY --from=builder /app/node_modules ./node_modules
 
 # Exposer le port de l'API
