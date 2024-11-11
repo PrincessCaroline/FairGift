@@ -3,7 +3,7 @@ import {
   GiftIcon,
   CogIcon,
   ChevronDownIcon,
-  PlusIcon,
+  PlusCircleIcon,
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import { GroupMemberCountDto } from "@repo/dto";
@@ -43,7 +43,7 @@ export default function Header({
     <div className="relative">
       <header className="flex items-center justify-between p-4 bg-white shadow-md">
         <div className="flex items-center" onClick={() => handleGiftClick()}>
-          <GiftIcon className="h-6 w-6 text-pink-500" />
+          <GiftIcon className="h-6 w-6 text-red-500" />
         </div>
 
         <div>
@@ -85,7 +85,7 @@ export default function Header({
               className="flex items-center p-3 hover:bg-gray-100 cursor-pointer"
               onClick={() => handleCreateGroupClick()}
             >
-              <PlusIcon className="h-8 w-8 text-pink-500 mr-3" />
+              <PlusCircleIcon className="h-8 w-8 text-pink-500 mr-3" />
               <div>
                 <span className="font-medium text-pink-500">
                   Créer un Groupe

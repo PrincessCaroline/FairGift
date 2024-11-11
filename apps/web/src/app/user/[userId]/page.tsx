@@ -1,12 +1,13 @@
 "use client";
 
 import GiftCard from "@/components/gift/giftCard";
+import GenericButton from "@/components/ui/genericButton";
 import HeaderGeneric from "@/components/ui/headerGeneric";
 import { useUserGifts } from "@/hooks/useGift";
 import { useGroups } from "@/hooks/useGroup";
 import { useUser } from "@/hooks/useUserProfile";
 import { userCanAddGift } from "@/utils/canAddGift";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -117,13 +118,12 @@ export default function UserGiftPage() {
 
       {/* Bouton sticky en bas */}
       <div className="bg-white w-full max-w-md px-6 py-4 mx-auto sticky bottom-0">
-        <button
-          className="flex items-center justify-center px-4 py-2 rounded-full bg-pink-500 w-full text-white font-medium shadow-md hover:bg-pink-600 font-semibold"
-          onClick={handleAddGift}
-        >
-          <PlusIcon className="w-5 h-5 mr-2" />
-          <span>Ajoute ta propre idée de cadeau</span>
-        </button>
+        <GenericButton
+              text="Ajoute ta propre idée de cadeau"
+              Icon={PlusCircleIcon}
+              onClick={handleAddGift}
+
+            />
       </div>
     </div>
   );

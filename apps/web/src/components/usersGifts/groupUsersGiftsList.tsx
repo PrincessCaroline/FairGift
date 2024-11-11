@@ -1,5 +1,5 @@
 import { useGroupUsersGifts } from "@/hooks/useGift";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { GiftDto, GroupUsersGiftDto } from "@repo/dto";
 import { useRouter } from "next/navigation";
 import GiftCardSimple from "../gift/giftCardSimple";
@@ -22,8 +22,7 @@ export default function GroupUsersGiftsList({
   } = useGroupUsersGifts(groupIdSelected);
 
   const handleViewUserClick = (userId: number) => {
-    if (canPickGift)
-      router.push(`/user/${userId}?groupId=${groupIdSelected}`);
+    if (canPickGift) router.push(`/user/${userId}?groupId=${groupIdSelected}`);
   };
 
   if (isLoading) return <p>Chargement des cadeaux...</p>;
@@ -52,20 +51,14 @@ export default function GroupUsersGiftsList({
             ))}
           </div>
 
-
-
           <GenericButton
-            text={
-             "Ajouter un cadeau"
-            }
+            text={"Ajouter un cadeau"}
             disabled={!canPickGift}
-            Icon={PlusIcon}
+            Icon={PlusCircleIcon}
             type="submit"
             onClick={() => handleViewUserClick(userGift.userId)}
             className="mt-6"
           />
-
-
         </div>
       ))}
     </div>

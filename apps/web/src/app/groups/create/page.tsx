@@ -38,7 +38,7 @@ export default function CreateGroupForm() {
               id="groupName"
               value={groupName}
               onChange={(e) => setGroupName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400"
               placeholder="Nom du groupe"
               required
             />

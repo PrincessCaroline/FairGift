@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import HeaderGeneric from "@/components/ui/headerGeneric";
-import { PlusIcon } from "@heroicons/react/24/solid";
+import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import { useMyGifts } from "@/hooks/useGift";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -75,7 +75,7 @@ export default function GiftListPage() {
 
           <GenericButton
             text="Ajouter un cadeau"
-            Icon={PlusIcon}
+            Icon={PlusCircleIcon}
             onClick={handleAddGift}
             className="mt-6"
           />

@@ -37,13 +37,13 @@ export default function GiftCard({
     gift.buyers.length > 0
       ? "bg-gray-300"
       : gift.creatorId === userId
-        ? "bg-indigo-600"
-        : "bg-indigo-400";
+        ? "bg-green-800"
+        : "bg-lime-600";
 
   const textColor = gift.buyers.length > 0 ? "text-gray-700" : "text-white";
 
   const eyesColor =
-    gift.creatorId === userId ? "text-indigo-600" : "text-indigo-400";
+    gift.creatorId === userId ? "text-green-800" : "text-lime-600";
 
   return (
     <div

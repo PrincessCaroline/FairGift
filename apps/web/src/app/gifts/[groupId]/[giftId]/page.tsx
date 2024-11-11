@@ -5,7 +5,7 @@ import DeleteModal from "@/components/ui/deleteModal";
 import HeaderGeneric from "@/components/ui/headerGeneric";
 import {
   ArrowTopRightOnSquareIcon,
-  PlusIcon,
+  PlusCircleIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
 import {
@@ -114,7 +114,7 @@ export default function GiftPage() {
               gift.creatorId.toString() !== gift.ownerId.toString())) && (
             <GenericButton
               text="Je le prend"
-              Icon={PlusIcon}
+              Icon={PlusCircleIcon}
               onClick={handleBuyGift}
               className="mt-6"
             />

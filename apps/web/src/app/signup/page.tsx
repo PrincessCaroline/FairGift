@@ -34,7 +34,7 @@ export default function SignupPage() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="text-gray-800 w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-pink-500"
+            className="text-gray-800 w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400"
           />
           <input
             type="email"
@@ -42,7 +42,7 @@ export default function SignupPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="text-gray-800 w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-pink-500"
+            className="text-gray-800 w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400"
           />
           <input
             type="password"
@@ -50,7 +50,7 @@ export default function SignupPage() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="text-gray-800 w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-pink-500"
+            className="text-gray-800 w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400"
           />
           <button
             type="submit"

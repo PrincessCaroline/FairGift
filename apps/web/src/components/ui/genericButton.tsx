@@ -22,12 +22,18 @@ const GenericButton: FC<GenericButtonProps> = ({
       type={type}
       disabled={disabled}
       className={`flex items-center justify-center px-4 py-2 rounded-full w-full font-medium shadow-md font-semibold 
-                ${disabled ? "bg-gray-400 cursor-not-allowed" : "bg-pink-500 hover:bg-pink-600"} 
+                ${disabled ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-400 hover:bg-yellow-500"} 
                 text-white ${className}`}
       onClick={onClick}
     >
-      {Icon && <Icon className="w-5 h-5 mr-2" />}
-      <span>{text}</span>
+      {Icon && (
+        <Icon
+          className={`${disabled ? "text-white" : "text-yellow-800"} w-5 h-5 mr-2`}
+        />
+      )}
+      <span className={`${disabled ? "text-white" : "text-yellow-800"} `}>
+        {text}
+      </span>
     </button>
   );
 };

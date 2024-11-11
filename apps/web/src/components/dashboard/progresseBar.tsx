@@ -16,7 +16,7 @@ export default function ProgressBar({
       <div className="flex items-center space-x-2 gap-2">
         <ExclamationCircleIcon className="text-white w-6 h-6" />
         <div className="text-white font-medium">
-          {`Il te manque ${goalGifts - totalGifts} idées de cadeaux pour jouer.`}
+          {`Il te manque ${goalGifts - totalGifts} idée${goalGifts - totalGifts > 1 ? "s" : ""} de cadeaux pour jouer.`}
         </div>
       </div>
       <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden mt-2">

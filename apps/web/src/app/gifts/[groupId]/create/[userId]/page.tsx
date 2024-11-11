@@ -80,7 +80,7 @@ export default function CreateGiftPage() {
                   id="owner"
                   value={ownerId || ""}
                   onChange={(e) => setOwnerId(Number(e.target.value))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-pink-500 text-gray-800"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400 text-gray-800"
                 >
                   <option value={""} disabled>
                     Sélectionnez un utilisateur
@@ -102,7 +102,7 @@ export default function CreateGiftPage() {
               onChange={(e) => setGiftName(e.target.value)}
               placeholder="Libellé du nouveau cadeau"
               required
-              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400"
             />
           </div>
 
@@ -112,7 +112,7 @@ export default function CreateGiftPage() {
               onChange={(e) => setGiftDescription(e.target.value)}
               placeholder="Description du cadeau"
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400"
             />
           </div>
 
@@ -122,7 +122,7 @@ export default function CreateGiftPage() {
               value={purchaseLink}
               onChange={(e) => setPurchaseLink(e.target.value)}
               placeholder="Lien d'achat"
-              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-pink-500"
+              className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400"
             />
           </div>
           <GenericButton
