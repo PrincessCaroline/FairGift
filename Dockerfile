@@ -29,4 +29,4 @@ COPY --from=builder /app/node_modules ./node_modules
 EXPOSE 3000
 
 # Démarrer l'application en production
-CMD ["npm", "run", "start:api-prod"]
+CMD ["npm", "run", "start:prod"]
