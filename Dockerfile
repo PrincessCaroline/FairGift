@@ -9,10 +9,14 @@ COPY . .
 # Installer Turborepo globalement
 RUN npm install -g turbo
 
-# Installer les dépendances de la racine (partagées) et celles de `@repo/api`
+# Installer les dépendances pour la racine
+RUN npm install --legacy-peer-deps
+
+# Installer les dépendances pour `@repo/dto` et `@repo/api`
+RUN npm install --workspace=packages/dto --legacy-peer-deps
 RUN npm install --workspace=apps/api --legacy-peer-deps
 
-# Builder `@repo/api` et ses dépendances nécessaires
+# Builder `@repo/dto` et `@repo/api`
 RUN npm run build:api-prod
 
 # Étape 2 : Créer une image finale optimisée
