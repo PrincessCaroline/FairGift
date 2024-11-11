@@ -23,6 +23,7 @@ WORKDIR /app
 # Copier uniquement les fichiers nécessaires pour exécuter l'application
 COPY --from=builder /app/apps/api/dist ./dist
 COPY --from=builder /app/apps/api/package.json ./
+COPY --from=builder /app/packages/dto/dist ./node_modules/@repo/dto/dist
 COPY --from=builder /app/node_modules ./node_modules
 
 # Exposer le port de l'API
