@@ -42,7 +42,9 @@ export default function DashboardPage() {
         setGroupIdSelected={setGroupIdSelected}
       />
       <div className="min-h-screen bg-white ">
-        <ProgressBar totalGifts={gifts?.length ?? 0} goalGifts={goalGifts} />
+        {!canPickGift && (
+          <ProgressBar totalGifts={gifts?.length ?? 0} goalGifts={goalGifts} />
+        )}
         {groupIdSelected >= 0 ? (
           <GroupUsersGiftsList
             groupIdSelected={groupIdSelected}

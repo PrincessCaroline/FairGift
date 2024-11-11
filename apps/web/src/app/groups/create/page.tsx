@@ -1,5 +1,6 @@
 "use client";
 
+import GenericButton from "@/components/ui/genericButton";
 import HeaderGeneric from "@/components/ui/headerGeneric";
 import { useCreateGroup } from "@/hooks/useGroup";
 import { useRouter } from "next/navigation";
@@ -42,13 +43,15 @@ export default function CreateGroupForm() {
               required
             />
           </div>
-
-          <button
+          <GenericButton
+            text={
+              createGroupMutation.isPending ? "Création..." : "Créer le groupe"
+            }
+            disabled={createGroupMutation.isPending}
             type="submit"
-            className="mt-10 px-6 py-3 bg-pink-500 text-white font-semibold rounded-full w-full"
-          >
-            {createGroupMutation.isPending ? "Création..." : "Créer le groupe"}
-          </button>
+            onClick={() => {}}
+            className="mt-6"
+          />
         </form>
       </div>
     </div>

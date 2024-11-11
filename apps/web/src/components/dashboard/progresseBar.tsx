@@ -1,3 +1,5 @@
+import { ExclamationCircleIcon } from "@heroicons/react/24/solid";
+
 type ProgressBarProps = {
   totalGifts: number;
   goalGifts: number;
@@ -9,20 +11,17 @@ export default function ProgressBar({
 }: ProgressBarProps) {
   const progress = Math.min((totalGifts / goalGifts) * 100, 100);
 
-  const bgColor = totalGifts < goalGifts ? "bg-pink-400" : "bg-green-400";
-  const progressBgColor =
-    totalGifts < goalGifts ? "bg-pink-500" : "bg-green-500";
-
   return (
-    <div className={`p-4 ${bgColor} shadow-md max-w-md mx-auto`}>
-      <p className="text-white font-medium mb-2">
-        {totalGifts < goalGifts
-          ? `Il te manque ${goalGifts - totalGifts} idées de cadeaux pour compléter ta liste d'achat.`
-          : "Tu peux jouer"}
-      </p>
-      <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+    <div className={`p-4 bg-red-700 shadow-md max-w-md mx-auto`}>
+      <div className="flex items-center space-x-2 gap-2">
+        <ExclamationCircleIcon className="text-white w-6 h-6" />
+        <div className="text-white font-medium">
+          {`Il te manque ${goalGifts - totalGifts} idées de cadeaux pour jouer.`}
+        </div>
+      </div>
+      <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden mt-2">
         <div
-          className={`h-full ${progressBgColor} rounded-full`}
+          className={`h-full bg-red-500 rounded-full`}
           style={{ width: `${progress}%` }}
         />
       </div>

@@ -1,14 +1,12 @@
 "use client";
 
+import GiftCard from "@/components/gift/giftCard";
 import HeaderGeneric from "@/components/ui/headerGeneric";
-import { useBuyGift, useUserGifts } from "@/hooks/useGift";
+import { useUserGifts } from "@/hooks/useGift";
+import { useGroups } from "@/hooks/useGroup";
 import { useUser } from "@/hooks/useUserProfile";
-import {
-  ArrowTopRightOnSquareIcon,
-  EyeIcon,
-  PencilIcon,
-  PlusIcon,
-} from "@heroicons/react/24/solid";
+import { userCanAddGift } from "@/utils/canAddGift";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -16,7 +14,6 @@ export default function UserGiftPage() {
   const searchParams = useSearchParams();
   const groupId = searchParams.get("groupId");
   const router = useRouter();
-  const buyGiftMutation = useBuyGift();
   const [userId, setUserId] = useState<number | null>(null);
 
   useEffect(() => {
@@ -29,6 +26,11 @@ export default function UserGiftPage() {
     }
   }, []);
 
+  const {
+    data: groups,
+    isLoading: isGroupsLoading,
+    isError: isGroupsError,
+  } = useGroups();
   const {
     data: user,
     isLoading: userIsLoading,
@@ -44,35 +46,31 @@ export default function UserGiftPage() {
     router.push(`/gifts/${groupId}/create/${userId}`);
   };
 
-  const handleBuyGift = (giftId: number, isBuy: boolean) => {
-    if (!isBuy) {
-      buyGiftMutation.mutate(giftId);
-    }
-  };
-
-  const viewGift = (giftId: number) => {
-    router.push(`/gifts/${groupId}/${giftId}`);
-  };
-
-  if (giftIsLoading || userIsLoading) return <p>Chargement des cadeaux...</p>;
-  if (giftIsError || userIsError || !user)
+  if (giftIsLoading || userIsLoading || isGroupsLoading)
+    return <p>Chargement des cadeaux...</p>;
+  if (giftIsError || userIsError || isGroupsError || !user || !groups)
     return <p>Erreur lors du chargement des cadeaux.</p>;
 
-  // gifts?.length dispo et creator me > nombre de membre -1
+  const canAddGift = userCanAddGift({
+    gifts: gifts ?? [],
+    userId: user.id,
+    groups,
+  });
 
   return (
-    <div className="min-h-screen bg-white pb-5">
+    <div className="min-h-screen flex flex-col bg-white">
       <HeaderGeneric name="Echanger une idée de cadeau" />
-      <div className="py-10">
+
+      <div className="flex-grow py-10">
         <div className="flex flex-col items-center mb-8">
           <div className="w-20 h-20 bg-gray-500 rounded-full mb-4"></div>
           <h1 className="text-xl font-semibold text-gray-500 capitalize">
-            {user?.name}
+            {user.name}
           </h1>
         </div>
 
-        <div className="w-full max-w-md px-6 space-y-4">
-          <p className="text-gray-500">Disponible :</p>
+        <div className="w-full max-w-md px-6 space-y-4 mx-auto">
+          <p className="text-gray-500 uppercase">Disponible :</p>
           {gifts
             ?.filter((gift) => gift.buyers.length === 0)
             .sort((a, b) => {
@@ -89,83 +87,43 @@ export default function UserGiftPage() {
               return 0;
             })
             .map((gift) => (
-              <div
-                key={gift.id}
-                className={`flex items-center justify-between px-4 py-2 rounded-full text-white ${
-                  gift.creatorId === Number(user.id)
-                    ? "bg-purple-600"
-                    : "bg-pink-600"
-                }`}
-                onClick={() => handleBuyGift(gift.id, gift.buyers.length > 0)}
-              >
-                <div className="flex items-center space-x-2 w-90">
-                  <span className="capitalize">{gift.name}</span>
-                  {gift.creatorId !== Number(user.id) ? (
-                    <span className="text-xs">
-                      Idée de{" "}
-                      <span className="capitalize">{gift.creatorName}</span>
-                    </span>
-                  ) : null}
-                </div>
-                <div
-                  className="flex items-center justify-between gap-2"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    viewGift(gift.id); 
-                  }}
-                >
-                  <div
-                    className={`capitalize bg-white text-sm rounded-full px-1 py-1 ${
-                      gift.creatorId === Number(user.id)
-                        ? "text-purple-600"
-                        : "text-pink-600"
-                    }`}
-                  >
-                    <EyeIcon className="w-5 h-5 cursor-pointer" />
-                  </div>
-                </div>
+              <div key={`${gift.id}-dispo`}>
+                <GiftCard
+                  gift={gift}
+                  groupId={Number(groupId)}
+                  userId={Number(user.id)}
+                  canAddGift={canAddGift}
+                />
               </div>
             ))}
 
-          <p className="text-gray-500">Déja pris:</p>
+          {gifts &&
+            gifts.filter((gift) => gift.buyers.length > 0).length > 0 && (
+              <p className="text-gray-500 uppercase pt-2">Déjà pris :</p>
+            )}
           {gifts
             ?.filter((gift) => gift.buyers.length > 0)
             .map((gift) => (
-              <div
-                key={gift.id}
-                className={`flex items-center justify-between px-4 py-2 rounded-full text-white bg-gray-400
-              `}
-                onClick={() =>  viewGift(gift.id)}
-              >
-                <div className="flex items-center space-x-2">
-                  <span className="capitalize">{gift.name}</span>
-                  {gift.creatorId !== Number(user.id) ? (
-                    <span className="text-xs">
-                      Idée de{" "}
-                      <span className="capitalize">{gift.creatorName}</span>
-                    </span>
-                  ) : null}
-                </div>
-                <div className="flex items-center justify-between gap-2">
-                  <div className="capitalize bg-gray-500 text-gray-300 text-sm rounded-full px-2 py-0.5">
-                    {gift.buyers.map((buyer) => buyer.name).join(", ")}
-                  </div>
-                </div>
+              <div key={`${gift.id}-not-dispo`}>
+                <GiftCard
+                  gift={gift}
+                  groupId={Number(groupId)}
+                  userId={Number(user.id)}
+                />
               </div>
             ))}
         </div>
+      </div>
 
-        <div className="w-full max-w-md px-6 space-y-4 mt-10">
-          <button
-            className="flex items-center justify-between px-4 py-2 rounded-full bg-gray-400 w-full"
-            onClick={handleAddGift}
-          >
-            <div className="flex items-center text-white">
-              <PlusIcon className="w-5 h-5 mr-2" />
-              <span>Ajoute ta propre idée de cadeau</span>
-            </div>
-          </button>
-        </div>
+      {/* Bouton sticky en bas */}
+      <div className="bg-white w-full max-w-md px-6 py-4 mx-auto sticky bottom-0">
+        <button
+          className="flex items-center justify-center px-4 py-2 rounded-full bg-pink-500 w-full text-white font-medium shadow-md hover:bg-pink-600 font-semibold"
+          onClick={handleAddGift}
+        >
+          <PlusIcon className="w-5 h-5 mr-2" />
+          <span>Ajoute ta propre idée de cadeau</span>
+        </button>
       </div>
     </div>
   );

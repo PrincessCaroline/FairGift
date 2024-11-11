@@ -6,7 +6,6 @@ import {
   CreateGroupDto,
   GroupMemberCountDto,
   GroupMemberDto,
-  GroupWithMembersDto,
   Role,
 } from '@repo/dto';
 import { User } from '../users/modeles/users.model';
@@ -29,10 +28,6 @@ export class GroupService {
       ownerId: user.id,
     });
     await group.$add('members', user.id, { through: { role: Role.OWNER } });
-  }
-
-  async getUserGroups(userId: number): Promise<GroupWithMembersDto[]> {
-    return await this.usersService.getUserGroups(userId);
   }
 
   async getGroupsByUserId(userId: number): Promise<GroupMemberCountDto[]> {
@@ -103,6 +98,11 @@ export class GroupService {
                   model: User,
                   as: 'buyers',
                   through: { attributes: ['status'] }, // Spécifiez les attributs de la table de jointure GiftBuyer
+                },
+                {
+                  model: User,
+                  as: 'creator', // Inclut également l'information sur le propriétaire
+                  attributes: ['id', 'name'], // Inclure seulement les attributs nécessaires
                 },
               ],
             },

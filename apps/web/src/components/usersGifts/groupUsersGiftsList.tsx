@@ -1,11 +1,9 @@
 import { useGroupUsersGifts } from "@/hooks/useGift";
-import {
-  StarIcon,
-  PlusIcon,
-  ArrowTopRightOnSquareIcon,
-} from "@heroicons/react/24/solid";
+import { PlusIcon } from "@heroicons/react/24/solid";
 import { GiftDto, GroupUsersGiftDto } from "@repo/dto";
 import { useRouter } from "next/navigation";
+import GiftCardSimple from "../gift/giftCardSimple";
+import GenericButton from "../ui/genericButton";
 
 type GroupUsersGiftsListProps = {
   groupIdSelected: number;
@@ -24,7 +22,8 @@ export default function GroupUsersGiftsList({
   } = useGroupUsersGifts(groupIdSelected);
 
   const handleViewUserClick = (userId: number) => {
-    router.push(`/user/${userId}?groupId=${groupIdSelected}`);
+    if (canPickGift)
+      router.push(`/user/${userId}?groupId=${groupIdSelected}`);
   };
 
   if (isLoading) return <p>Chargement des cadeaux...</p>;
@@ -43,34 +42,30 @@ export default function GroupUsersGiftsList({
           </div>
           <div className="space-y-2">
             {userGift.gifts.map((gift: GiftDto) => (
-              <div
-                key={gift.id}
-                className={`flex items-center justify-between px-4 py-2 rounded-full bg-purple-500`}
-                onClick={() =>
-                  router.push(`/gifts/${groupIdSelected}/${gift.id}`)
-                }
-              >
-                <div className="flex items-center text-white">
-                  <StarIcon className="w-5 h-5 mr-2" />
-                  <span className="capitalize">{gift.name}</span>
-                </div>
-                {gift.purchaseLink && (
-                  <ArrowTopRightOnSquareIcon className="h-5 w-5 cursor-pointer" />
-                )}
+              <div key={gift.id}>
+                <GiftCardSimple
+                  gift={gift}
+                  groupId={userGift.groupId}
+                  userId={userGift.userId}
+                />
               </div>
             ))}
           </div>
 
-          <button
+
+
+          <GenericButton
+            text={
+             "Ajouter un cadeau"
+            }
             disabled={!canPickGift}
-            className="mt-6 flex items-center justify-between px-4 py-2 rounded-full bg-gray-400 w-full"
+            Icon={PlusIcon}
+            type="submit"
             onClick={() => handleViewUserClick(userGift.userId)}
-          >
-            <div className="flex items-center text-white">
-              <PlusIcon className="w-5 h-5 mr-2" />
-              <span> Ajouter un cadeau</span>
-            </div>
-          </button>
+            className="mt-6"
+          />
+
+
         </div>
       ))}
     </div>

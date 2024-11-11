@@ -8,9 +8,17 @@ import {
   PlusIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
-import { useBuyGift, useCancelBuyGift, useGift } from "@/hooks/useGift";
+import {
+  useBuyGift,
+  useCancelBuyGift,
+  useGift,
+  useUserGifts,
+} from "@/hooks/useGift";
 import { useRouter } from "next/navigation";
 import { useUserProfile } from "@/hooks/useUserProfile";
+import { userCanAddGift } from "@/utils/canAddGift";
+import { useGroups } from "@/hooks/useGroup";
+import GenericButton from "@/components/ui/genericButton";
 
 export default function GiftPage() {
   const router = useRouter();
@@ -18,12 +26,14 @@ export default function GiftPage() {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const buyGiftMutation = useBuyGift();
   const cancelBuyGiftMutation = useCancelBuyGift();
+  const { data: gift, isLoading, isError } = useGift(giftId);
+  const { data: gifts } = useUserGifts(Number(gift?.ownerId));
+  const { data: groups } = useGroups();
   const {
     data: user,
     isLoading: userIsLoading,
     isError: userIsError,
   } = useUserProfile();
-  const { data: gift, isLoading, isError } = useGift(giftId);
 
   useEffect(() => {
     const pathSegments = window.location.pathname.split("/");
@@ -46,6 +56,12 @@ export default function GiftPage() {
     return <p>Chargement du cadeau...</p>;
   if (isError || userIsError)
     return <p>Une erreur est survenue lors du chargement du cadeau.</p>;
+
+  const canAddGift = userCanAddGift({
+    gifts: gifts ?? [],
+    userId: gift.ownerId.toString(),
+    groups: groups ?? [],
+  });
 
   return (
     <div className="min-h-screen bg-white">
@@ -84,21 +100,24 @@ export default function GiftPage() {
 
           {gift.buyers[0] &&
             user.id.toString() === gift.buyers[0].userId.toString() && (
-              <button
+              <GenericButton
+                text=" Je ne l'achète plus"
+                Icon={TrashIcon}
                 onClick={() => setIsDeleteModalOpen(true)}
-                className="flex items-center mt-6 px-4 py-2 bg-pink-500 text-white font-semibold rounded-full w-full"
-              >
-                <TrashIcon className="h-5 w-5 mr-2" /> Je ne l'achète plus
-              </button>
+                className="mt-6"
+              />
             )}
 
-          {gift.buyers.length === 0 && (
-            <button
-              onClick={() => handleBuyGift()}
-              className="flex items-center mt-6 px-4 py-2 bg-pink-500 text-white font-semibold rounded-full w-full"
-            >
-              <PlusIcon className="h-5 w-5 mr-2" /> Je le prend
-            </button>
+          {((gift.buyers.length === 0 &&
+            gift.creatorId.toString() !== gift.ownerId.toString()) ||
+            (canAddGift &&
+              gift.creatorId.toString() !== gift.ownerId.toString())) && (
+            <GenericButton
+              text="Je le prend"
+              Icon={PlusIcon}
+              onClick={handleBuyGift}
+              className="mt-6"
+            />
           )}
         </div>
       </div>

@@ -9,13 +9,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { User } from './modeles/users.model';
 import { generateToken } from 'src/shared/utils/generateToken';
-import { Group } from '../group/modeles/group.model';
-import {
-  CreateUserDto,
-  GroupWithMembersDto,
-  MemberDto,
-  UserDto,
-} from '@repo/dto';
+import { CreateUserDto, UserDto } from '@repo/dto';
 
 @Injectable()
 export class UsersService {
@@ -61,35 +55,5 @@ export class UsersService {
       name: user.name,
       email: user.email,
     });
-  }
-
-  async getUserGroups(userId: number): Promise<GroupWithMembersDto[]> {
-    return [];
-    /*  const user = await this.userModel.findByPk(userId, {
-              include: [Group], // Récupère les groupes de l'utilisateur sans inclure les membres pour éviter les conflits
-          });
-          if (!user) throw new Error('User not found');
-  
-  
-          const groupsWithMembers = await Promise.all(
-              user.groups.map(async (group) => {
-                  const members = await group.$get('users');
-  
-                  return new GroupWithMembersDto({
-                      id: group.id,
-                      name: group.name,
-                      ownerId: group.ownerId,
-                      createdAt: new Date(group.createdAt),
-                      updatedAt: new Date(group.updatedAt),
-                      members: members.map(member => new MemberDto({
-                          id: member.id,
-                          name: member.name,
-                          email: member.email,
-                      })),
-                  });
-              })
-          );
-  
-          return groupsWithMembers;*/
   }
 }

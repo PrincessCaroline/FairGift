@@ -4,7 +4,6 @@ import { AuthGuard } from '../auth/auth.guard';
 import { AuthUser } from '../auth/auth.decorator';
 import { UserAuth } from '../auth/auth.entity';
 import { AddUserToGroupDto, CreateGroupDto } from '@repo/dto';
-import { get } from 'http';
 
 @Controller('group')
 export class GroupController {

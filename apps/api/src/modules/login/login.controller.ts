@@ -14,8 +14,6 @@ import { Response } from 'express';
 import { LoginService } from './login.service';
 import { LoginDto } from '@repo/dto';
 import { AuthGuard } from '../auth/auth.guard';
-import { AuthUser } from '../auth/auth.decorator';
-import { UserAuth } from '../auth/auth.entity';
 
 @Controller('login')
 export class LoginController {

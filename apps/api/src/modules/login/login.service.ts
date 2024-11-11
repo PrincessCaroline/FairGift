@@ -8,7 +8,7 @@ import { LoginDto } from '@repo/dto';
 export class LoginService {
   constructor(private readonly usersService: UsersService) {}
 
-  async login(loginDto: LoginDto): Promise<String> {
+  async login(loginDto: LoginDto): Promise<string> {
     const { email, password } = loginDto;
 
     // Cherche l'utilisateur par email

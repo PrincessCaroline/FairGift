@@ -1,5 +1,6 @@
 "use client";
 
+import GenericButton from "@/components/ui/genericButton";
 import HeaderGeneric from "@/components/ui/headerGeneric";
 import { useCreateGift } from "@/hooks/useGift";
 import { useUsersByGroupId } from "@/hooks/useGroup";
@@ -124,14 +125,15 @@ export default function CreateGiftPage() {
               className="w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-pink-500"
             />
           </div>
-
-          <button
-            type="submit"
-            className="mt-6 px-4 py-2 bg-pink-500 text-white font-semibold rounded-full w-full"
+          <GenericButton
+            text={
+              createGiftMutation.isPending ? "Création..." : "Créer le cadeau"
+            }
             disabled={createGiftMutation.isPending}
-          >
-            {createGiftMutation.isPending ? "Création..." : "Créer le cadeau"}
-          </button>
+            type="submit"
+            onClick={() => {}}
+            className="mt-6"
+          />
         </form>
       </div>
     </div>
