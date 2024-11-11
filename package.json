@@ -3,6 +3,8 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "build:api-prod": "turbo run build --filter=@repo/dto && turbo run build --filter=@repo/api",
+    "start:api-prod": "turbo run start:prod --filter=@repo/api",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "build": "nest build",
-    "build:prod": "turbo run build --filter=@repo/dto && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "dev": "nest start --watch",
