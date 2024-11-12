@@ -8,7 +8,9 @@ WORKDIR /app
 COPY package.json turbo.json ./
 COPY packages packages/
 COPY apps/api apps/api/
-COPY apps/api/package.json apps/api/
+
+# Installer TurboRepo globalement et les dépendances du projet
+RUN npm install -g turbo
 RUN npm install
 
 # Construire le package DTO et l'API
@@ -20,8 +22,8 @@ FROM node:18 AS runner
 # Définir le dossier de travail
 WORKDIR /app
 
-# Copier les fichiers construits
+# Copier uniquement les fichiers nécessaires de l'étape de build
 COPY --from=builder /app .
 
-# Définir la commande de démarrage
+# Définir la commande de démarrage pour l'API
 CMD ["npm", "run", "start:api-prod"]
