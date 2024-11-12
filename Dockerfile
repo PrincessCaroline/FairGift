@@ -24,8 +24,7 @@ ARG NODE_ENV
 COPY package.json turbo.json ./
 COPY packages packages/
 COPY apps/api apps/api/
-# Copier le fichier .env.production dans le conteneur
-COPY .env.production .env
+
 
 # Installer TurboRepo globalement et les dépendances du projet
 RUN npm install -g turbo
