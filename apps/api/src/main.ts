@@ -10,7 +10,10 @@ async function bootstrap() {
   app.use(cookieParser());
 
   app.enableCors({
-    origin: 'http://localhost:3000', // Domaine de ton front-end
+    origin:
+      process.env.NODE_ENV === 'DEV'
+        ? 'http://localhost:3000'
+        : 'https://fair-gift-web.vercel.app',
     credentials: true, // Autorise les cookies
   });
 
