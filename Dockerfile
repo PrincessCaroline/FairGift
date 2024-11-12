@@ -1,34 +1,27 @@
-# Étape 1 : Installer Turborepo globalement et builder les dépendances
+# Étape 1 : Construction
 FROM node:18 AS builder
 
+# Définir le dossier de travail
 WORKDIR /app
 
-# Copier tous les fichiers du monorepo dans le conteneur
-COPY . .
+# Copier les fichiers principaux et les installer
+COPY package.json turbo.json ./
+COPY packages packages/
+COPY apps/api apps/api/
+COPY apps/api/package.json apps/api/
+RUN npm install
 
-# Installer Turborepo globalement
-RUN npm install -g turbo
-
-# Installer toutes les dépendances du monorepo
-RUN npm install --legacy-peer-deps
-
-# Builder les packages nécessaires (`@repo/dto` et `@repo/api`)
+# Construire le package DTO et l'API
 RUN npm run build:api-prod
 
-# Étape 2 : Créer une image finale optimisée
+# Étape 2 : Production
 FROM node:18 AS runner
 
+# Définir le dossier de travail
 WORKDIR /app
 
-# Copier les fichiers buildés pour `@repo/api`
-COPY --from=builder /app/apps/api/dist ./dist
-COPY --from=builder /app/apps/api/package.json ./
+# Copier les fichiers construits
+COPY --from=builder /app .
 
-# Copier l'intégralité de `node_modules` pour toutes les dépendances, incluant `@repo/dto`
-COPY --from=builder /app/node_modules ./node_modules
-
-# Exposer le port de l'API
-EXPOSE 3000
-
-# Démarrer l'application en production
-CMD ["node", "dist/main.js"]
+# Définir la commande de démarrage
+CMD ["npm", "run", "start:api-prod"]
