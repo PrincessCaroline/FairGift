@@ -4,6 +4,11 @@ FROM node:18 AS builder
 # Définir le dossier de travail
 WORKDIR /app
 
+# Copier les fichiers principaux et les installer
+COPY package.json turbo.json ./
+COPY packages packages/
+COPY apps/api apps/api/
+
 # railway env variables
 ARG RAILWAY_PUBLIC_DOMAIN
 ARG RAILWAY_PRIVATE_DOMAIN
@@ -17,14 +22,6 @@ ARG RAILWAY_SERVICE_ID
 ARG DATABASE_URL
 ARG JWT_SECRET
 ARG NODE_ENV
-
-
-
-# Copier les fichiers principaux et les installer
-COPY package.json turbo.json ./
-COPY packages packages/
-COPY apps/api apps/api/
-
 
 # Installer TurboRepo globalement et les dépendances du projet
 RUN npm install -g turbo
