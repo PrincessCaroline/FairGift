@@ -5,11 +5,7 @@ export const getDatabaseConfig = (
   configService: ConfigService,
 ): SequelizeModuleOptions => ({
   dialect: 'postgres',
-  host: configService.get<string>('DB_HOST'),
-  port: configService.get<number>('DB_PORT'),
-  username: configService.get<string>('DB_USERNAME'),
-  password: configService.get<string>('DB_PASSWORD'),
-  database: configService.get<string>('DB_NAME'),
+  uri: configService.get<string>('DATABASE_URL'),
   autoLoadModels: true,
   synchronize: true,
 });
