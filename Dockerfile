@@ -2,9 +2,6 @@
 FROM node:20 AS builder
 WORKDIR /app
 
-# Installer le CLI NestJS globalement
-RUN npm install -g @nestjs/cli
-
 # Déclarer les arguments pour les variables d'environnement
 ARG DATABASE_URL
 ARG JWT_SECRET
@@ -22,7 +19,7 @@ COPY apps/api apps/api/
 
 # Installer TurboRepo et les dépendances de production
 RUN npm install -g turbo
-RUN npm install --omit=dev
+RUN npm install
 
 # Construire le projet
 RUN npm run build:api-prod
