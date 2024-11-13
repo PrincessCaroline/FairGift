@@ -9,15 +9,22 @@ COPY package.json turbo.json ./
 COPY packages packages/
 COPY apps/api apps/api/
 
-# Définir les variables d'environnement uniquement pour l'exécution
-ENV DATABASE_URL=${DATABASE_URL}
-ENV JWT_SECRET=${JWT_SECRET}
-ENV NODE_ENV=${NODE_ENV}
+# railway env variables
+ARG RAILWAY_PUBLIC_DOMAIN
+ARG RAILWAY_PRIVATE_DOMAIN
+ARG RAILWAY_PROJECT_NAME
+ARG RAILWAY_ENVIRONMENT_NAME
+ARG RAILWAY_SERVICE_NAME
+ARG RAILWAY_PROJECT_ID
+ARG RAILWAY_ENVIRONMENT_ID
+ARG RAILWAY_SERVICE_ID
+# app env variables
+ARG DATABASE_URL
+ARG JWT_SECRET
+ARG NODE_ENV
 
-# Afficher les valeurs pendant l'exécution pour vérifier
-CMD echo "JWT_SECRET: $JWT_SECRET" && \
-    echo "DATABASE_URL: $DATABASE_URL" && \
-    echo "NODE_ENV: $NODE_ENV" && \
+RUN echo $JWT_SECRET
+RUN echo $DATABASE_URL
 
 # Installer TurboRepo globalement et les dépendances du projet
 RUN npm install -g turbo
