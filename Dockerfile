@@ -2,19 +2,18 @@
 FROM node:20 AS builder
 WORKDIR /app
 
-# Copier les fichiers de configuration et installer les dépendances
+# Copier les fichiers principaux et installer toutes les dépendances
 COPY package.json turbo.json ./
 COPY packages packages/
 COPY apps/api apps/api/
 
-# Installer TurboRepo et les dépendances de production
-RUN npm install -g turbo
-RUN npm install --omit=dev
+# Installez toutes les dépendances, y compris celles de développement
+RUN npm install
 
 # Construire le projet
 RUN npm run build:api-prod
 
-# Étape 2 : Exécution
+# Étape 2 : Production
 FROM node:20 AS runner
 WORKDIR /app
 
