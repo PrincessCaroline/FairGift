@@ -32,7 +32,7 @@ ENV NODE_ENV=${NODE_ENV}
 
 # Installer TurboRepo globalement et les dépendances du projet
 RUN npm install -g turbo
-RUN npm install --omit=dev
+RUN npm install
 
 # Construire le package DTO et l'API
 RUN npm run build:api-prod
