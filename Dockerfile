@@ -1,15 +1,9 @@
 # Étape 1 : Construction
-FROM node:18 AS builder
+FROM node
 
 # Définir le dossier de travail
 WORKDIR /app
 
-# Copier les fichiers principaux et les installer
-COPY package.json turbo.json ./
-COPY packages packages/
-COPY apps/api apps/api/
-
-FROM node
 # railway env variables
 ARG RAILWAY_PUBLIC_DOMAIN
 ARG RAILWAY_PRIVATE_DOMAIN
@@ -26,6 +20,12 @@ ARG NODE_ENV
 
 RUN echo $JWT_SECRET
 RUN echo $DATABASE_URL
+
+# Copier les fichiers principaux et les installer
+COPY package.json turbo.json ./
+COPY packages packages/
+COPY apps/api apps/api/
+
 
 
 # Installer TurboRepo globalement et les dépendances du projet
