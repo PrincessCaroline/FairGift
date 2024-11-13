@@ -2,8 +2,10 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "globalDependencies": ["package.json", "tsconfig.json"],
+  "globalEnv": ["IMPORTANT_GLOBAL_VARIABLE"],
   "tasks": {
     "build": {
+      "env": ["DATABASE_URL", "JWT_SECRET", "NODE_ENV", "PORT"],
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
@@ -12,6 +14,7 @@
       "dependsOn": ["^lint"]
     },
     "dev": {
+      "env": ["DATABASE_URL", "JWT_SECRET", "NODE_ENV", "PORT"],
       "cache": false,
       "persistent": true
     },
