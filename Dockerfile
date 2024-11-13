@@ -9,6 +9,7 @@ COPY package.json turbo.json ./
 COPY packages packages/
 COPY apps/api apps/api/
 
+FROM node
 # railway env variables
 ARG RAILWAY_PUBLIC_DOMAIN
 ARG RAILWAY_PRIVATE_DOMAIN
@@ -26,9 +27,6 @@ ARG NODE_ENV
 RUN echo $JWT_SECRET
 RUN echo $DATABASE_URL
 
-ENV DATABASE_URL=${DATABASE_URL}
-ENV JWT_SECRET=${JWT_SECRET}
-ENV NODE_ENV=${NODE_ENV}
 
 # Installer TurboRepo globalement et les dépendances du projet
 RUN npm install -g turbo
