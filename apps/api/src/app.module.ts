@@ -9,7 +9,7 @@ import { GiftModule } from './modules/gift/gift.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) =>
@@ -22,4 +22,4 @@ import { GiftModule } from './modules/gift/gift.module';
     GiftModule,
   ],
 })
-export class AppModule {}
+export class AppModule { }
