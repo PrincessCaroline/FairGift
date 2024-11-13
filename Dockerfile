@@ -26,6 +26,10 @@ ARG NODE_ENV
 RUN echo $JWT_SECRET
 RUN echo $DATABASE_URL
 
+ENV DATABASE_URL=${DATABASE_URL}
+ENV JWT_SECRET=${JWT_SECRET}
+ENV NODE_ENV=${NODE_ENV}
+
 # Installer TurboRepo globalement et les dépendances du projet
 RUN npm install -g turbo
 RUN npm install
