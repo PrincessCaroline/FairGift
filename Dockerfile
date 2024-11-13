@@ -1,22 +1,28 @@
 # Étape 1 : Construction
 FROM node:20 AS builder
-
-# Définir le dossier de travail
 WORKDIR /app
 
-# Copier les fichiers principaux et les installer
+# Copier les fichiers de configuration et installer les dépendances
 COPY package.json turbo.json ./
 COPY packages packages/
 COPY apps/api apps/api/
 
-# Installer TurboRepo globalement et les dépendances du projet
-RUN npm install 
+# Installer TurboRepo et les dépendances de production
 RUN npm install -g turbo
+RUN npm install --omit=dev
 
-# Copier uniquement les fichiers nécessaires de l'étape de build
+# Construire le projet
+RUN npm run build:api-prod
+
+# Étape 2 : Exécution
+FROM node:20 AS runner
+WORKDIR /app
+
+# Copier uniquement les fichiers nécessaires depuis le builder
 COPY --from=builder /app .
 
+# Exposer le port
 EXPOSE 3000
 
-# Définir la commande de démarrage pour l'API
+# Lancer l'application
 CMD ["npm", "run", "start:api-prod"]
