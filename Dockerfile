@@ -5,6 +5,7 @@ FROM node:18 AS builder
 WORKDIR /app
 
 # Copier les fichiers principaux et les installer
+COPY .env .env
 COPY package.json turbo.json ./
 COPY packages packages/
 COPY apps/api apps/api/
