@@ -17,7 +17,7 @@ import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('login')
 export class LoginController {
-  constructor(private readonly loginService: LoginService) { }
+  constructor(private readonly loginService: LoginService) {}
 
   @Post('/')
   @UsePipes(new ValidationPipe())

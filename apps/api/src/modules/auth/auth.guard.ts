@@ -16,6 +16,8 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = request.cookies?.token;
 
+    console.log('token', token);
+
     if (!token) {
       throw new UnauthorizedException('No token found');
     }
@@ -25,6 +27,7 @@ export class AuthGuard implements CanActivate {
       request.user = decoded as UserAuth;
       return true;
     } catch {
+      console.error('Token is invalid or expired');
       throw new UnauthorizedException('Token is invalid or expired');
     }
   }

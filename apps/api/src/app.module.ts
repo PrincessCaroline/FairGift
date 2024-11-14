@@ -22,4 +22,4 @@ import { GiftModule } from './modules/gift/gift.module';
     GiftModule,
   ],
 })
-export class AppModule { }
+export class AppModule {}
