@@ -2,6 +2,17 @@
 FROM node:20 AS builder
 WORKDIR /app
 
+ARG DATABASE_URL
+ARG JWT_SECRET
+ARG NODE_ENV
+
+RUN echo $JWT_SECRET
+RUN echo $DATABASE_URL
+
+ENV DATABASE_URL=${DATABASE_URL}
+ENV JWT_SECRET=${JWT_SECRET}
+ENV NODE_ENV=${NODE_ENV}
+
 # Copier les fichiers principaux et installer toutes les dépendances
 COPY package.json turbo.json ./
 COPY packages packages/
