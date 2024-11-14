@@ -17,7 +17,7 @@ import { AuthGuard } from '../auth/auth.guard';
 
 @Controller('login')
 export class LoginController {
-  constructor(private readonly loginService: LoginService) {}
+  constructor(private readonly loginService: LoginService) { }
 
   @Post('/')
   @UsePipes(new ValidationPipe())
@@ -26,9 +26,9 @@ export class LoginController {
 
     res.cookie('token', accessToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Assure le cookie en HTTPS en production
+      secure: false, //process.env.NODE_ENV === 'production', // Assure le cookie en HTTPS en production
       maxAge: 60 * 24 * 60 * 60 * 1000, // 2 mois en millisecondes
-      sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'none', // Empêche l'envoi du cookie sur des sites externes
+      sameSite: process.env.NODE_ENV === 'production' ? 'lax' : 'lax', // Empêche l'envoi du cookie sur des sites externes
     });
 
     return res
