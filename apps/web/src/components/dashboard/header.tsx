@@ -32,7 +32,7 @@ export default function Header({
   };
 
   const handleCreateGroupClick = () => {
-    //router.push("/groups/create");
+    router.push("/groups/create");
   };
 
   const handleGiftClick = () => {
