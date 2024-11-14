@@ -19,6 +19,7 @@ COPY packages packages/
 COPY apps/api apps/api/
 
 # Installez toutes les dépendances, y compris celles de développement
+RUN npm install -g turbo
 RUN npm install
 
 # Construire le projet
