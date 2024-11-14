@@ -12,9 +12,9 @@ import { GiftModule } from './modules/gift/gift.module';
     ConfigModule.forRoot({ isGlobal: true }),
     SequelizeModule.forRootAsync({
       imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) =>
         getDatabaseConfig(configService),
-      inject: [ConfigService],
     }),
     LoginModule,
     UsersModule,
