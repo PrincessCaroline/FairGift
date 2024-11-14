@@ -4,17 +4,6 @@ WORKDIR /app
 
 RUN npm install -g @nestjs/cli
 
-ARG DATABASE_URL
-ARG JWT_SECRET
-ARG NODE_ENV
-
-RUN echo $JWT_SECRET
-RUN echo $DATABASE_URL
-
-ENV DATABASE_URL=${DATABASE_URL}
-ENV JWT_SECRET=${JWT_SECRET}
-ENV NODE_ENV=${NODE_ENV}
-
 # Copier les fichiers principaux et installer toutes les dépendances
 COPY package.json turbo.json ./
 COPY packages packages/
@@ -33,6 +22,18 @@ WORKDIR /app
 
 # Copier uniquement les fichiers nécessaires depuis le builder
 COPY --from=builder /app .
+
+ARG DATABASE_URL
+ARG JWT_SECRET
+ARG NODE_ENV
+
+RUN echo $JWT_SECRET
+RUN echo $DATABASE_URL
+
+ENV DATABASE_URL=${DATABASE_URL}
+ENV JWT_SECRET=${JWT_SECRET}
+ENV NODE_ENV=${NODE_ENV}
+
 
 # Exposer le port
 EXPOSE 3000
