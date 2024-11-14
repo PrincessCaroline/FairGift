@@ -2,6 +2,8 @@
 FROM node:20 AS builder
 WORKDIR /app
 
+RUN npm install -g @nestjs/cli
+
 ARG DATABASE_URL
 ARG JWT_SECRET
 ARG NODE_ENV
