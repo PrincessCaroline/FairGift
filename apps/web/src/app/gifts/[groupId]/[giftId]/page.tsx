@@ -95,9 +95,9 @@ export default function GiftPage() {
               {gift.description
                 ? gift.description
                 : "Ce cadeau n'a pas description"}
-              {gift.purchaseLink ?? (
+              {gift.purchaseLink ? (
                 <ArrowTopRightOnSquareIcon className="absolute top-3 right-2 h-5 w-5 text-white" />
-              )}
+              ) : null}
             </a>
           </div>
 
