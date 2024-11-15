@@ -1,4 +1,4 @@
-import { useBuyGift } from "@/hooks/useGift";
+//import { useBuyGift } from "@/hooks/useGift";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import { GiftDto } from "@repo/dto";
 import { useRouter } from "next/navigation";
@@ -14,20 +14,20 @@ export default function GiftCard({
   gift,
   groupId,
   userId,
-  canAddGift = true,
+  //canAddGift = true,
 }: GiftCardProps) {
   const router = useRouter();
-  const buyGiftMutation = useBuyGift();
 
-  const handleBuyGift = (giftId: number) => {
-    if (canAddGift) {
-      buyGiftMutation.mutate(giftId);
-    } else if (gift.creatorId !== userId) {
-      buyGiftMutation.mutate(giftId);
-    } else {
-      viewGift(giftId);
-    }
-  };
+  // const buyGiftMutation = useBuyGift();
+  /* const handleBuyGift = (giftId: number) => {
+     if (canAddGift) {
+       buyGiftMutation.mutate(giftId);
+     } else if (gift.creatorId !== userId) {
+       buyGiftMutation.mutate(giftId);
+     } else {
+       viewGift(giftId);
+     }
+   };*/
 
   const viewGift = (giftId: number) => {
     router.push(`/gifts/${groupId}/${giftId}`);
@@ -51,7 +51,8 @@ export default function GiftCard({
         bgColor
       }`}
       onClick={() =>
-        gift.buyers.length === 0 ? handleBuyGift(gift.id) : viewGift(gift.id)
+        //gift.buyers.length === 0 ? handleBuyGift(gift.id) : viewGift(gift.id)
+        viewGift(gift.id)
       }
     >
       <div className="flex items-center space-x-2 w-90">
@@ -72,10 +73,10 @@ export default function GiftCard({
       ) : (
         <div
           className="flex items-center justify-between gap-2"
-          onClick={(e) => {
-            e.stopPropagation();
-            viewGift(gift.id);
-          }}
+          /* onClick={(e) => {
+       e.stopPropagation();
+         viewGift(gift.id);
+       }}*/
         >
           <div
             className={`capitalize bg-white text-sm rounded-full px-1 py-1 ${

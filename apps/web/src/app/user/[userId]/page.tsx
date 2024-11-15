@@ -3,6 +3,8 @@
 import GiftCard from "@/components/gift/giftCard";
 import GenericButton from "@/components/ui/genericButton";
 import HeaderGeneric from "@/components/ui/headerGeneric";
+import LoadingPage from "@/components/ui/loading";
+import WarningHeader, { WarningType } from "@/components/ui/warningHeader";
 import { useUserGifts } from "@/hooks/useGift";
 import { useGroups } from "@/hooks/useGroup";
 import { useUser } from "@/hooks/useUserProfile";
@@ -47,10 +49,8 @@ export default function UserGiftPage() {
     router.push(`/gifts/${groupId}/create/${userId}`);
   };
 
-  if (giftIsLoading || userIsLoading || isGroupsLoading)
-    return <p>Chargement des cadeaux...</p>;
-  if (giftIsError || userIsError || isGroupsError || !user || !groups)
-    return <p>Erreur lors du chargement des cadeaux.</p>;
+  if (giftIsLoading || userIsLoading || isGroupsLoading || !user || !groups)
+    return <LoadingPage />;
 
   const canAddGift = userCanAddGift({
     gifts: gifts ?? [],
@@ -61,10 +61,14 @@ export default function UserGiftPage() {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <HeaderGeneric name="Echanger une idée de cadeau" />
-
+      {(giftIsError || userIsError || isGroupsError) ?? (
+        <WarningHeader
+          text="Erreur lors du chargement des cadeaux."
+          type={WarningType.ERROR}
+        />
+      )}
       <div className="flex-grow py-10">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-20 h-20 bg-gray-500 rounded-full mb-4"></div>
           <h1 className="text-xl font-semibold text-gray-500 capitalize">
             {user.name}
           </h1>

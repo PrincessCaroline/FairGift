@@ -75,7 +75,7 @@ export default function Modal({
                 </button>
                 <button
                   type="button"
-                  className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-pink-600 rounded-md hover:bg-pink-700"
+                  className="inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-red-700 rounded-md hover:bg-pink-700"
                   onClick={onConfirm}
                 >
                   Confirmer

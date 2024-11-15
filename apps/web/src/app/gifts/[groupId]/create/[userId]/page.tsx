@@ -2,6 +2,8 @@
 
 import GenericButton from "@/components/ui/genericButton";
 import HeaderGeneric from "@/components/ui/headerGeneric";
+import LoadingPage from "@/components/ui/loading";
+import WarningHeader, { WarningType } from "@/components/ui/warningHeader";
 import { useCreateGift } from "@/hooks/useGift";
 import { useUsersByGroupId } from "@/hooks/useGroup";
 import { CreateGiftDto } from "@repo/dto";
@@ -55,6 +57,8 @@ export default function CreateGiftPage() {
     router.back();
   };
 
+  if (isLoading) return <LoadingPage />;
+
   return (
     <div className="min-h-screen bg-white">
       <HeaderGeneric name="Ajouter un cadeau" url={`/gifts/${groupId}`} />
@@ -64,10 +68,11 @@ export default function CreateGiftPage() {
           className="space-y-4 bg-white p-6 w-full max-w-sm"
         >
           <div>
-            {isLoading ? (
-              <p>Chargement des utilisateurs...</p>
-            ) : isError ? (
-              <p>Erreur lors du chargement des utilisateurs</p>
+            {isError ? (
+              <WarningHeader
+                text="Erreur lors du chargement des utilisateurs."
+                type={WarningType.ERROR}
+              />
             ) : (
               <>
                 <label

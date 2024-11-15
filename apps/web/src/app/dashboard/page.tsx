@@ -7,6 +7,7 @@ import { useGroups } from "@/hooks/useGroup";
 import { useEffect, useState } from "react";
 import ProgressBar from "@/components/dashboard/progresseBar";
 import { useMyGifts } from "@/hooks/useGift";
+import LoadingPage from "@/components/ui/loading";
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function DashboardPage() {
     return null;
   }
 
-  if (isLoading || !groups) return <p>Loading...</p>;
+  if (isLoading || !groups) return <LoadingPage />;
 
   const goalGifts = groups.reduce(
     (acc, group) => acc + (group.memberCount - 1),
@@ -41,7 +42,7 @@ export default function DashboardPage() {
         groupIdSelected={groupIdSelected}
         setGroupIdSelected={setGroupIdSelected}
       />
-      <div className="min-h-screen bg-white ">
+      <div className="min-h-screen bg-white">
         {!canPickGift && (
           <ProgressBar totalGifts={gifts?.length ?? 0} goalGifts={goalGifts} />
         )}

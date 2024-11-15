@@ -52,7 +52,7 @@ export class GiftService {
       description: gift.description ?? '',
       purchaseLink: gift.purchaseLink ?? '',
       ownerId: gift.ownerId,
-      creatorName: '',
+      creatorName: gift.creator.name,
       creatorId: gift.creator.id,
       createdAt: gift.createdAt,
       updatedAt: gift.updatedAt,

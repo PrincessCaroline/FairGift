@@ -19,6 +19,8 @@ import { useUserProfile } from "@/hooks/useUserProfile";
 import { userCanAddGift } from "@/utils/canAddGift";
 import { useGroups } from "@/hooks/useGroup";
 import GenericButton from "@/components/ui/genericButton";
+import LoadingPage from "@/components/ui/loading";
+import WarningHeader, { WarningType } from "@/components/ui/warningHeader";
 
 export default function GiftPage() {
   const router = useRouter();
@@ -52,10 +54,7 @@ export default function GiftPage() {
     }
   };
 
-  if (isLoading || userIsLoading || !gift || !user)
-    return <p>Chargement du cadeau...</p>;
-  if (isError || userIsError)
-    return <p>Une erreur est survenue lors du chargement du cadeau.</p>;
+  if (isLoading || userIsLoading || !gift || !user) return <LoadingPage />;
 
   const canAddGift = userCanAddGift({
     gifts: gifts ?? [],
@@ -66,59 +65,71 @@ export default function GiftPage() {
   return (
     <div className="min-h-screen bg-white">
       <HeaderGeneric name="Détails du cadeau" />
-      <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
-        <div className="w-full max-w-md space-y-6 bg-white p-6 rounded-lg shadow-lg">
-          <div className="flex justify-center items-center px-4 py-2 text-gray-700">
-            <span className="font-semibold text-xl">{gift.name}</span>
+      {(isError || userIsError) ?? (
+        <WarningHeader
+          text="Une erreur est survenue lors du chargement du cadeau."
+          type={WarningType.ERROR}
+        />
+      )}
+      <div className="flex flex-col items-center min-h-screen p-4 text-gray-700">
+        <div className="w-full max-w-md bg-white p-6 space-y-4">
+          <div>
+            <h1
+              className="font-semibold text-xl"
+              style={{ textTransform: "capitalize" }}
+            >
+              {gift.name}
+            </h1>
+            <p className="text-sm text-gray-600 italic">
+              Idée de {gift.creatorName}
+            </p>
           </div>
-          <p>
-            {gift.purchaseLink && (
-              <a
-                href={gift.purchaseLink}
-                target="_blank"
-                rel="noopener noreferrer"
-              ></a>
-            )}
-          </p>
 
-          {gift.purchaseLink && (
+          <div className="relative flex justify-center">
             <a
-              href={gift.purchaseLink}
+              href={gift.purchaseLink || "#"}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 mt-4 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-600 transition duration-200 ease-in-out"
+              className="flex items-center gap-2 px-6 py-3 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 transition duration-200 ease-in-out w-full"
             >
-              Lien d'achat
-              <ArrowTopRightOnSquareIcon className="h-5 w-5" />
+              {gift.description
+                ? gift.description
+                : "Ce cadeau n'a pas description"}
+              {gift.purchaseLink ?? (
+                <ArrowTopRightOnSquareIcon className="absolute top-3 right-2 h-5 w-5 text-white" />
+              )}
             </a>
-          )}
-          {gift.description && (
-            <div className="description-block bg-gray-50 border border-gray-200 rounded-lg p-4 text-gray-700 shadow-sm">
-              <p>{gift.description}</p>
-            </div>
-          )}
+          </div>
 
           {gift.buyers[0] &&
             user.id.toString() === gift.buyers[0].userId.toString() && (
               <GenericButton
-                text=" Je ne l'achète plus"
+                text="Je ne l'achète plus"
                 Icon={TrashIcon}
                 onClick={() => setIsDeleteModalOpen(true)}
                 className="mt-6"
               />
             )}
 
-          {((gift.buyers.length === 0 &&
-            gift.creatorId.toString() !== gift.ownerId.toString()) ||
-            (canAddGift &&
-              gift.creatorId.toString() !== gift.ownerId.toString())) && (
-            <GenericButton
-              text="Je le prend"
-              Icon={PlusCircleIcon}
-              onClick={handleBuyGift}
-              className="mt-6"
-            />
-          )}
+          {gift.buyers.length === 0 &&
+            user.id.toString() !== gift.ownerId.toString() &&
+            (canAddGift ||
+              (!canAddGift &&
+                gifts &&
+                (gifts.every(
+                  (g) =>
+                    !g.buyers.some(
+                      (buyer) => buyer.userId.toString() === user.id.toString(),
+                    ),
+                ) ||
+                  gift.creatorId.toString() !== gift.ownerId.toString()))) && (
+              <GenericButton
+                text="Je le prend"
+                Icon={PlusCircleIcon}
+                onClick={handleBuyGift}
+                className="mt-6"
+              />
+            )}
         </div>
       </div>
 
