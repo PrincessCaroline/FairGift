@@ -62,6 +62,17 @@ export default function GiftPage() {
     groups: groups ?? [],
   });
 
+  const displayAddGiftButton =
+    canAddGift ||
+    (!canAddGift &&
+      (gifts?.every(
+        (g) =>
+          !g.buyers.some(
+            (buyer) => buyer.userId.toString() === user.id.toString(),
+          ),
+      ) ||
+        gift.creatorId.toString() !== gift.ownerId.toString()));
+
   return (
     <div className="min-h-screen bg-white">
       <HeaderGeneric name="Détails du cadeau" />
@@ -71,6 +82,14 @@ export default function GiftPage() {
           type={WarningType.ERROR}
         />
       )}
+
+      {!displayAddGiftButton && !gift.buyers.length && (
+        <WarningHeader
+          text={`Vous ne pouvez plus acheter de cadeaux créés par ${gift.creatorName}. Il faut en laisser pour tout le monde !`}
+          type={WarningType.WARNING}
+        />
+      )}
+
       <div className="flex flex-col items-center min-h-screen p-4 text-gray-700">
         <div className="w-full max-w-md bg-white p-6 space-y-4">
           <div>
@@ -86,19 +105,25 @@ export default function GiftPage() {
           </div>
 
           <div className="relative flex justify-center">
-            <a
-              href={gift.purchaseLink || "#"}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-6 py-3 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 transition duration-200 ease-in-out w-full"
-            >
-              {gift.description
-                ? gift.description
-                : "Ce cadeau n'a pas description"}
-              {gift.purchaseLink ? (
+            {gift.purchaseLink ? (
+              <a
+                href={gift.purchaseLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 px-6 py-3 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 transition duration-200 ease-in-out w-full"
+              >
+                {gift.description
+                  ? gift.description
+                  : "Ce cadeau n'a pas de description"}
                 <ArrowTopRightOnSquareIcon className="absolute top-3 right-2 h-5 w-5 text-white" />
-              ) : null}
-            </a>
+              </a>
+            ) : (
+              <div className="flex items-center gap-2 px-6 py-3 bg-green-700 text-white rounded-lg shadow-md hover:bg-green-800 transition duration-200 ease-in-out w-full">
+                {gift.description
+                  ? gift.description
+                  : "Ce cadeau n'a pas de description"}
+              </div>
+            )}
           </div>
 
           {gift.buyers[0] &&
@@ -113,16 +138,7 @@ export default function GiftPage() {
 
           {gift.buyers.length === 0 &&
             user.id.toString() !== gift.ownerId.toString() &&
-            (canAddGift ||
-              (!canAddGift &&
-                gifts &&
-                (gifts.every(
-                  (g) =>
-                    !g.buyers.some(
-                      (buyer) => buyer.userId.toString() === user.id.toString(),
-                    ),
-                ) ||
-                  gift.creatorId.toString() !== gift.ownerId.toString()))) && (
+            displayAddGiftButton && (
               <GenericButton
                 text="Je le prend"
                 Icon={PlusCircleIcon}

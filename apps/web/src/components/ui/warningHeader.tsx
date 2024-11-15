@@ -14,7 +14,7 @@ type WarningHeaderProps = {
 export default function WarningHeader({ type, text }: WarningHeaderProps) {
   const bgColor =
     type === WarningType.WARNING
-      ? "bg-yellow-300"
+      ? "bg-orange-400"
       : type === WarningType.ERROR
         ? "bg-red-700"
         : "";
@@ -26,7 +26,7 @@ export default function WarningHeader({ type, text }: WarningHeaderProps) {
         <div>
           <div className="text-white font-medium">{text}</div>
           <div className="text-white size-xs italic">
-            Contacter Caroline ou Jérémy
+            {type === WarningType.ERROR && "Contacter Caroline ou Jérémy"}
           </div>
         </div>
       </div>

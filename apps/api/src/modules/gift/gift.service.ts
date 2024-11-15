@@ -8,6 +8,7 @@ import {
   GiftDto,
   GroupUsersGiftDto,
   PurchaseStatus,
+  UpdateGiftDto,
 } from '@repo/dto';
 import { User } from '../users/modeles/users.model';
 import { GroupService } from '../group/group.service';
@@ -36,6 +37,18 @@ export class GiftService {
       purchaseLink,
       creatorId: userId,
     });
+  }
+
+  async updateGift(
+    giftId: number,
+    updateGiftDto: UpdateGiftDto,
+  ): Promise<void> {
+    const { description, purchaseLink } = updateGiftDto;
+
+    await this.giftModel.update(
+      { description, purchaseLink },
+      { where: { id: giftId } },
+    );
   }
 
   async getGift(giftId: number): Promise<GiftDto> {

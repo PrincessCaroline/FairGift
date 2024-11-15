@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  Patch,
   Post,
   UseGuards,
   UsePipes,
@@ -13,7 +14,7 @@ import { GiftService } from './gift.service';
 import { AuthUser } from '../auth/auth.decorator';
 import { UserAuth } from '../auth/auth.entity';
 import { AuthGuard } from '../auth/auth.guard';
-import { CreateGiftDto } from '@repo/dto';
+import { CreateGiftDto, UpdateGiftDto } from '@repo/dto';
 
 @Controller('gift')
 export class GiftController {
@@ -35,6 +36,18 @@ export class GiftController {
   async buyGift(@AuthUser() user: UserAuth, @Param('id') giftId: number) {
     await this.giftService.buyGift(Number(user.id), giftId);
     return { message: 'Gift purchased successfully' };
+  }
+
+  @Patch(':id')
+  @UsePipes(new ValidationPipe())
+  @UseGuards(AuthGuard)
+  async updateGift(
+    @AuthUser() user: UserAuth,
+    @Param('id') giftId: number,
+    @Body() updateGiftDto: UpdateGiftDto,
+  ) {
+    await this.giftService.updateGift(giftId, updateGiftDto);
+    return { message: 'Gift updated successfully' };
   }
 
   @Get('user/:userId')

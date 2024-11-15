@@ -59,12 +59,13 @@ export default function LoginPage() {
                 className="text-gray-800 w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400"
               />
 
-
               <GenericButton
-                text={loginMutation.isPending ? "Connexion en cours" : "Connexion"}
+                text={
+                  loginMutation.isPending ? "Connexion en cours" : "Connexion"
+                }
                 disabled={loginMutation.isPending}
                 type="submit"
-                onClick={() => { }}
+                onClick={() => {}}
                 className="mt-6"
               />
             </form>

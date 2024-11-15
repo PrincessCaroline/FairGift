@@ -101,3 +101,28 @@ export function useCancelBuyGift() {
     },
   });
 }
+
+export function useUpdateGift() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      giftId,
+      description,
+      purchaseLink,
+    }: {
+      giftId: number;
+      description?: string;
+      purchaseLink?: string;
+    }) => {
+      const response = await apiClient.patch(`/gift/${giftId}`, {
+        description,
+        purchaseLink,
+      });
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["gifts"] });
+    },
+  });
+}

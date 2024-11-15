@@ -44,7 +44,14 @@ export default function GiftListPage() {
     }
   };
 
-  if (giftsIsLoading || userIsLoading || isGroupsLoading)
+  if (
+    giftsIsLoading ||
+    userIsLoading ||
+    isGroupsLoading ||
+    !groupId ||
+    !user ||
+    !gifts
+  )
     return <LoadingPage />;
 
   const goalGifts = groups
@@ -68,7 +75,12 @@ export default function GiftListPage() {
         <div className="flex flex-col items-center p-4">
           <div className="w-full max-w-md space-y-4">
             {gifts?.map((gift) => (
-              <div key={gift.id}>
+              <div
+                key={gift.id}
+                onClick={() =>
+                  router.push(`/gifts/${groupId}/${gift.id}/update`)
+                }
+              >
                 <GiftCardSimple
                   gift={gift}
                   groupId={Number(groupId)}
