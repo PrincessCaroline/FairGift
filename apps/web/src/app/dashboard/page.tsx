@@ -27,7 +27,7 @@ export default function DashboardPage() {
     return null;
   }
 
-  if (isLoading || !groups) return <LoadingPage />;
+  if (isLoading || !groups || !gifts) return <LoadingPage />;
 
   const goalGifts = groups.reduce(
     (acc, group) => acc + (group.memberCount - 1),
