@@ -1,9 +1,9 @@
 import { useState } from "react";
 import {
   GiftIcon,
-  CogIcon,
   ChevronDownIcon,
   PlusCircleIcon,
+  UserIcon,
 } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import { GroupMemberCountDto } from "@repo/dto";
@@ -58,7 +58,7 @@ export default function Header({
         </div>
 
         <div className="flex items-center">
-          <CogIcon
+          <UserIcon
             className="h-6 w-6 text-gray-600"
             onClick={() => router.push("/user/account")}
           />
