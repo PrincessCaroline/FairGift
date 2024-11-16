@@ -7,10 +7,11 @@ import { useMyGifts } from "@/hooks/useGift";
 import { useUserProfile } from "@/hooks/useUserProfile";
 import ProgressBar from "@/components/dashboard/progresseBar";
 import { useGroups } from "@/hooks/useGroup";
-import GiftCardSimple from "@/components/gift/giftCardSimple";
+
 import GenericButton from "@/components/ui/genericButton";
 import LoadingPage from "@/components/ui/loading";
 import WarningHeader, { WarningType } from "@/components/ui/warningHeader";
+import GiftCard from "@/components/gift/giftCard";
 
 export default function GiftListPage() {
   const router = useRouter();
@@ -71,7 +72,11 @@ export default function GiftListPage() {
                 key={gift.id}
                 onClick={() => router.push(`/gifts/${gift.id}/update`)}
               >
-                <GiftCardSimple gift={gift} userId={gift.ownerId} />
+                <GiftCard
+                  gift={gift}
+                  userId={Number(gift.ownerId)}
+                  viewBuyers={false}
+                />
               </div>
             ))}
           </div>

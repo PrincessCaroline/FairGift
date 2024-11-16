@@ -6,9 +6,10 @@ import { useRouter } from "next/navigation";
 type GiftCardProps = {
   gift: GiftDto;
   userId: number;
+  viewBuyers: boolean;
 };
 
-export default function GiftCard({ gift, userId }: GiftCardProps) {
+export default function GiftCard({ gift, userId, viewBuyers }: GiftCardProps) {
   const router = useRouter();
 
   const viewGift = (giftId: number) => {
@@ -16,13 +17,14 @@ export default function GiftCard({ gift, userId }: GiftCardProps) {
   };
 
   const bgColor =
-    gift.buyers.length > 0
+    gift.buyers.length > 0 && viewBuyers
       ? "bg-gray-300"
       : gift.creatorId === userId
         ? "bg-green-800"
         : "bg-lime-600";
 
-  const textColor = gift.buyers.length > 0 ? "text-gray-700" : "text-white";
+  const textColor =
+    gift.buyers.length > 0 && viewBuyers ? "text-gray-700" : "text-white";
 
   const eyesColor =
     gift.creatorId === userId ? "text-green-800" : "text-lime-600";
@@ -46,7 +48,7 @@ export default function GiftCard({ gift, userId }: GiftCardProps) {
         )}
       </div>
 
-      {gift.buyers.length > 0 ? (
+      {gift.buyers.length > 0 && viewBuyers ? (
         <div className="flex items-center justify-between gap-2">
           <div
             className="bg-gray-500 text-gray-300 text-sm rounded-full px-2 py-0.5"

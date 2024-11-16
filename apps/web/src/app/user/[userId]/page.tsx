@@ -80,7 +80,11 @@ export default function UserGiftPage() {
             })
             .map((gift) => (
               <div key={`${gift.id}-dispo`}>
-                <GiftCard gift={gift} userId={Number(user.id)} />
+                <GiftCard
+                  gift={gift}
+                  userId={Number(user.id)}
+                  viewBuyers={true}
+                />
               </div>
             ))}
 
@@ -92,7 +96,11 @@ export default function UserGiftPage() {
             ?.filter((gift) => gift.buyers.length > 0)
             .map((gift) => (
               <div key={`${gift.id}-not-dispo`}>
-                <GiftCard gift={gift} userId={Number(user.id)} />
+                <GiftCard
+                  gift={gift}
+                  userId={Number(user.id)}
+                  viewBuyers={true}
+                />
               </div>
             ))}
         </div>

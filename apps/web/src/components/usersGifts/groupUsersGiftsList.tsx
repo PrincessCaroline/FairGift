@@ -2,10 +2,11 @@ import { useGroupUsersGifts } from "@/hooks/useGift";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { GiftDto, GroupUsersGiftDto } from "@repo/dto";
 import { useRouter } from "next/navigation";
-import GiftCardSimple from "../gift/giftCardSimple";
+
 import GenericButton from "../ui/genericButton";
 import LoadingPage from "../ui/loading";
 import WarningHeader, { WarningType } from "../ui/warningHeader";
+import GiftCard from "../gift/giftCard";
 
 type GroupUsersGiftsListProps = {
   groupIdSelected: number;
@@ -52,7 +53,11 @@ export default function GroupUsersGiftsList({
             <div className="space-y-2">
               {userGift.gifts.map((gift: GiftDto) => (
                 <div key={gift.id}>
-                  <GiftCardSimple gift={gift} userId={userGift.userId} />
+                  <GiftCard
+                    gift={gift}
+                    userId={Number(userGift.userId)}
+                    viewBuyers={false}
+                  />
                 </div>
               ))}
             </div>
