@@ -167,11 +167,7 @@ export default function UserAccount() {
       </div>
 
       <div className="bg-white w-full max-w-md px-6 py-4 mx-auto sticky bottom-0">
-        <GenericButton
-          text="Déconnexion"
-          onClick={handleLogout}
-          className="w-full bg-red-500 hover:bg-red-600 text-white"
-        />
+        <GenericButton text="Déconnexion" onClick={handleLogout} color="red" />
       </div>
     </div>
   );

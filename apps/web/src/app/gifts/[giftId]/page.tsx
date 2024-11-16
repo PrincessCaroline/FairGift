@@ -199,6 +199,7 @@ export default function GiftPage() {
                 Icon={TrashIcon}
                 onClick={() => openModal("deleteGift")}
                 className="mt-6"
+                color="red"
               />
             )}
         </div>
