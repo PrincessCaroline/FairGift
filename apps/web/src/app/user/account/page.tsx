@@ -87,7 +87,7 @@ export default function UserAccount() {
           </h1>
         </div>
 
-        <div className="w-full max-w-md px-6 space-y-4 mx-auto">
+        <div className="w-full  px-6 space-y-4 mx-auto">
           <h2 className="text-gray-700 font-semibold">Modification</h2>
           {/* Modification du nom */}
 
@@ -166,7 +166,7 @@ export default function UserAccount() {
         </div>
       </div>
 
-      <div className="bg-white w-full max-w-md px-6 py-4 mx-auto sticky bottom-0">
+      <div className="bg-white w-full px-6 py-4 mx-auto sticky bottom-0">
         <GenericButton text="Déconnexion" onClick={handleLogout} color="red" />
       </div>
     </div>

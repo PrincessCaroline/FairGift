@@ -31,7 +31,7 @@ export default function GiftCard({ gift, userId, viewBuyers }: GiftCardProps) {
 
   return (
     <div
-      className={`flex items-center justify-between px-4 py-2 rounded-full ${textColor} ${
+      className={`w-full flex items-center justify-between px-4 py-2 rounded-full ${textColor} ${
         bgColor
       }`}
       onClick={() => viewGift(gift.id)}

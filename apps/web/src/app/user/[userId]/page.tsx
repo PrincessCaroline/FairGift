@@ -61,7 +61,7 @@ export default function UserGiftPage() {
           </h1>
         </div>
 
-        <div className="w-full max-w-md px-6 space-y-4 mx-auto">
+        <div className="w-full  px-6 space-y-4 mx-auto">
           <p className="text-gray-500 uppercase">Disponible :</p>
           {gifts
             ?.filter((gift) => gift.buyers.length === 0)
@@ -106,7 +106,7 @@ export default function UserGiftPage() {
         </div>
       </div>
 
-      <div className="bg-white w-full max-w-md px-6 py-4 mx-auto sticky bottom-0">
+      <div className="bg-white w-full px-6 py-4 mx-auto sticky bottom-0">
         <GenericButton
           text="Ajoute ta propre idée de cadeau"
           Icon={PlusCircleIcon}

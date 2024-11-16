@@ -66,7 +66,7 @@ export default function GiftListPage() {
           <ProgressBar totalGifts={gifts?.length ?? 0} goalGifts={goalGifts} />
         )}
         <div className="flex flex-col items-center p-4">
-          <div className="w-full max-w-md space-y-4">
+          <div className="w-full space-y-4">
             {gifts?.map((gift) => (
               <div
                 key={gift.id}
@@ -83,7 +83,7 @@ export default function GiftListPage() {
         </div>
       </div>
 
-      <div className="bg-white w-full max-w-md px-6 py-4 mx-auto sticky bottom-0">
+      <div className="bg-white w-full px-6 py-4 mx-auto sticky bottom-0">
         <GenericButton
           text="Ajouter un cadeau"
           Icon={PlusCircleIcon}

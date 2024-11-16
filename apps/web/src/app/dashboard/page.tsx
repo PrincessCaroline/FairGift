@@ -26,8 +26,8 @@ export default function DashboardPage() {
     if (savedGroupId) {
       setGroupIdSelected(Number(savedGroupId));
     } else if (groups && groups.length > 0) {
-      setGroupIdSelected(groups[0].id);
       setGroupIdSelected(Number(groups[0].id));
+      localStorage.setItem("selectedGroupId", groups[0].id.toString());
     }
   }, [groups]);
 

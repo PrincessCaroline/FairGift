@@ -58,7 +58,7 @@ export default function CreateGiftPage() {
       <div className="flex items-center justify-center py-10">
         <form
           onSubmit={handleSubmit}
-          className="space-y-4 bg-white p-6 w-full max-w-sm"
+          className="space-y-4 bg-white p-6 w-full "
         >
           <div>
             {isError ? (

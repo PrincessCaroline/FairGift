@@ -122,7 +122,7 @@ export default function GiftPage() {
       )}
 
       <div className="flex flex-col items-center min-h-screen p-4 text-gray-700">
-        <div className="w-full max-w-md bg-white p-6 space-y-4">
+        <div className="w-full bg-white p-6 space-y-4">
           <div className="flex items-center justify-between gap-2">
             <div>
               <h1
