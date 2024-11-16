@@ -86,15 +86,15 @@ export default function Header({
               </li>
             ))}
             <li
-              className="flex items-center p-3 hover:bg-gray-100 cursor-pointer"
+              className="flex items-center p-3 hover:bg-gray-100 cursor-pointer text-yellow-500"
               onClick={() => handleCreateGroupClick()}
             >
-              <PlusCircleIcon className="h-8 w-8 text-pink-500 mr-3" />
+              <PlusCircleIcon className="h-8 w-8 mr-3" />
               <div>
-                <span className="font-medium text-pink-500">
+                <span className="font-medium">
                   Créer un Groupe
                 </span>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm">
                   Pour votre famille, vos amis, ...
                 </p>
               </div>
