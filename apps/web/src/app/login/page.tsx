@@ -13,12 +13,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { isLoading, isSuccess, isError } = useCheckToken();
 
-  console.log("isLoading", isLoading);
-  console.log("isSuccess", isSuccess);
-  console.log("isError", isError);
-
   if (!isLoading && isSuccess && !isError) {
-    console.log("Redirecting to dashboard");
     router.push("/dashboard");
   }
 
