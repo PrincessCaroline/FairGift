@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import HeaderGeneric from "@/components/ui/headerGeneric";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";

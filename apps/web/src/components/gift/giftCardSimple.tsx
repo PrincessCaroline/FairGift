@@ -40,7 +40,7 @@ export default function GiftCardSimple({ gift, userId }: GiftCardSimpleProps) {
 
       <div
         className="flex items-center justify-between gap-2"
-        onClick={(e) => {
+        onClick={() => {
           viewGift(gift.id);
         }}
       >
