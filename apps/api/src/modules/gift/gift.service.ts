@@ -91,17 +91,17 @@ export class GiftService {
         {
           model: User,
           as: 'buyers',
-          through: { attributes: ['status'] }, // Spécifiez les attributs de la table de jointure GiftBuyer
+          through: { attributes: ['status'] },
         },
         {
           model: User,
-          as: 'owner', // Inclut également l'information sur le propriétaire
-          attributes: ['id', 'name'], // Inclure seulement les attributs nécessaires
+          as: 'owner',
+          attributes: ['id', 'name'],
         },
         {
           model: User,
-          as: 'creator', // Inclut également l'information sur le propriétaire
-          attributes: ['id', 'name'], // Inclure seulement les attributs nécessaires
+          as: 'creator',
+          attributes: ['id', 'name'],
         },
       ],
     });
@@ -118,14 +118,7 @@ export class GiftService {
           creatorId: gift.creator.id,
           createdAt: gift.createdAt,
           updatedAt: gift.updatedAt,
-          buyers: gift.buyers.map(
-            (buyer) =>
-              new BuyerDto({
-                userId: buyer.id,
-                name: buyer.name,
-                status: (buyer as any).GiftBuyer.status,
-              }),
-          ),
+          buyers: [],
         }),
     );
   }
