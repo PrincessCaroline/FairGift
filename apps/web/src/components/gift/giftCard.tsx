@@ -30,7 +30,7 @@ export default function GiftCard({
    };*/
 
   const viewGift = (giftId: number) => {
-    router.push(`/gifts/${groupId}/${giftId}`);
+    router.push(`/gifts/${giftId}`);
   };
 
   const bgColor =
@@ -80,9 +80,9 @@ export default function GiftCard({
         <div
           className="flex items-center justify-between gap-2"
           /* onClick={(e) => {
-     e.stopPropagation();
-       viewGift(gift.id);
-     }}*/
+   e.stopPropagation();
+     viewGift(gift.id);
+   }}*/
         >
           <div
             className={`capitalize bg-white text-sm rounded-full px-1 py-1 ${

@@ -28,6 +28,7 @@ export default function Header({
 
   const handleSelect = (id: number) => {
     setGroupIdSelected(id);
+    localStorage.setItem("selectedGroupId", id.toString());
     setIsDropdownOpen(false);
   };
 
@@ -36,7 +37,7 @@ export default function Header({
   };
 
   const handleGiftClick = () => {
-    router.push(`/gifts/${groupIdSelected}`);
+    router.push(`/gifts`);
   };
 
   return (

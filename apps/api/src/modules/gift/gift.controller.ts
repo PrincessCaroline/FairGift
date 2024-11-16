@@ -18,7 +18,7 @@ import { CreateGiftDto, UpdateGiftDto } from '@repo/dto';
 
 @Controller('gift')
 export class GiftController {
-  constructor(private readonly giftService: GiftService) { }
+  constructor(private readonly giftService: GiftService) {}
 
   @Post()
   @UsePipes(new ValidationPipe())

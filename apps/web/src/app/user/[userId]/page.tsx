@@ -46,7 +46,7 @@ export default function UserGiftPage() {
   } = useUserGifts(userId);
 
   const handleAddGift = () => {
-    router.push(`/gifts/${groupId}/create/${userId}`);
+    router.push(`/gifts/create/${userId}`);
   };
 
   if (giftIsLoading || userIsLoading || isGroupsLoading || !user || !groups)

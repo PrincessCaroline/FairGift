@@ -17,9 +17,7 @@ export default function UpdateGiftPage() {
   const { data: gift, isLoading, isError } = useGift(giftId);
 
   useEffect(() => {
-    console.log("giftId", giftId);
-
-    setGiftId(Number(window.location.pathname.split("/")[3]));
+    setGiftId(Number(window.location.pathname.split("/")[2]));
   }, []);
 
   useEffect(() => {

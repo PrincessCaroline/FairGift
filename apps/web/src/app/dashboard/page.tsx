@@ -21,10 +21,15 @@ export default function DashboardPage() {
   const [groupIdSelected, setGroupIdSelected] = useState<number>(-1);
 
   useEffect(() => {
-    if (groups && groups.length > 0 && groupIdSelected === -1) {
+    const savedGroupId = localStorage.getItem("selectedGroupId");
+
+    if (savedGroupId) {
+      setGroupIdSelected(Number(savedGroupId));
+    } else if (groups && groups.length > 0) {
       setGroupIdSelected(groups[0].id);
+      setGroupIdSelected(Number(groups[0].id));
     }
-  }, [groups, groupIdSelected]);
+  }, [groups]);
 
   if (isError || giftsIsError) {
     router.push("/login");

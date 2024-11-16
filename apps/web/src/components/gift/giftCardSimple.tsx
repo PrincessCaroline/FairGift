@@ -4,19 +4,14 @@ import { useRouter } from "next/navigation";
 
 type GiftCardSimpleProps = {
   gift: GiftDto;
-  groupId: number;
   userId: number;
 };
 
-export default function GiftCardSimple({
-  gift,
-  groupId,
-  userId,
-}: GiftCardSimpleProps) {
+export default function GiftCardSimple({ gift, userId }: GiftCardSimpleProps) {
   const router = useRouter();
 
   const viewGift = (giftId: number) => {
-    router.push(`/gifts/${groupId}/${giftId}`);
+    router.push(`/gifts/${giftId}`);
   };
 
   const bgColor = gift.creatorId === userId ? "bg-green-800" : "bg-lime-600";
@@ -26,8 +21,9 @@ export default function GiftCardSimple({
 
   return (
     <div
-      className={`flex items-center justify-between px-4 py-2 rounded-full ${textColor} ${bgColor
-        }`}
+      className={`flex items-center justify-between px-4 py-2 rounded-full ${textColor} ${
+        bgColor
+      }`}
       onClick={() => viewGift(gift.id)}
     >
       <div className="flex items-center space-x-2 w-90">

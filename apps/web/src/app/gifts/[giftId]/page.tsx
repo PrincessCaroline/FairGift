@@ -39,7 +39,7 @@ export default function GiftPage() {
 
   useEffect(() => {
     const pathSegments = window.location.pathname.split("/");
-    if (pathSegments[3]) setGiftId(Number(pathSegments[3]));
+    if (pathSegments[2]) setGiftId(Number(pathSegments[2]));
   }, []);
 
   const cancelBuyGift = async (giftId: number) => {

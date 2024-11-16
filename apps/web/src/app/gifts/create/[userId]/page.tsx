@@ -21,20 +21,13 @@ export default function CreateGiftPage() {
 
   useEffect(() => {
     const pathSegments = window.location.pathname.split("/");
-    const groupIdFromUrl = pathSegments[2];
-    const userIdFromUrl = pathSegments[4];
+    const userIdFromUrl = pathSegments[3];
 
-    if (groupIdFromUrl && !isNaN(Number(groupIdFromUrl))) {
-      setGroupId(Number(groupIdFromUrl));
-    } else {
-      setGroupId(null);
-    }
-
-    if (userIdFromUrl && !isNaN(Number(userIdFromUrl))) {
+    if (userIdFromUrl && !isNaN(Number(userIdFromUrl)))
       setOwnerId(Number(userIdFromUrl));
-    } else {
-      setOwnerId(null);
-    }
+
+    const savedGroupId = localStorage.getItem("selectedGroupId");
+    if (savedGroupId) setGroupId(Number(savedGroupId));
   }, []);
 
   const { data: users, isLoading, isError } = useUsersByGroupId(groupId);
@@ -61,7 +54,7 @@ export default function CreateGiftPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <HeaderGeneric name="Ajouter un cadeau" url={`/gifts/${groupId}`} />
+      <HeaderGeneric name="Ajouter un cadeau" />
       <div className="flex items-center justify-center py-10">
         <form
           onSubmit={handleSubmit}

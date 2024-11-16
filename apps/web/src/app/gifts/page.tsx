@@ -30,28 +30,14 @@ export default function GiftListPage() {
     isLoading: isGroupsLoading,
     isError: isGroupsError,
   } = useGroups();
-  const [groupId, setGroupId] = useState<string | null>(null);
-
-  useEffect(() => {
-    const pathSegments = window.location.pathname.split("/");
-    const id = pathSegments[2];
-    setGroupId(id);
-  }, []);
 
   const handleAddGift = () => {
-    if (groupId && user) {
-      router.push(`/gifts/${groupId}/create/${user.id}`);
+    if (user) {
+      router.push(`/gifts/create/${user.id}`);
     }
   };
 
-  if (
-    giftsIsLoading ||
-    userIsLoading ||
-    isGroupsLoading ||
-    !groupId ||
-    !user ||
-    !gifts
-  )
+  if (giftsIsLoading || userIsLoading || isGroupsLoading || !user || !gifts)
     return <LoadingPage />;
 
   const goalGifts = groups
@@ -77,15 +63,9 @@ export default function GiftListPage() {
             {gifts?.map((gift) => (
               <div
                 key={gift.id}
-                onClick={() =>
-                  router.push(`/gifts/${groupId}/${gift.id}/update`)
-                }
+                onClick={() => router.push(`/gifts/${gift.id}/update`)}
               >
-                <GiftCardSimple
-                  gift={gift}
-                  groupId={Number(groupId)}
-                  userId={gift.ownerId}
-                />
+                <GiftCardSimple gift={gift} userId={gift.ownerId} />
               </div>
             ))}
           </div>
