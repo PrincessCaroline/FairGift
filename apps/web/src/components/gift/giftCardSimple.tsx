@@ -26,16 +26,18 @@ export default function GiftCardSimple({
 
   return (
     <div
-      className={`flex items-center justify-between px-4 py-2 rounded-full ${textColor} ${
-        bgColor
-      }`}
+      className={`flex items-center justify-between px-4 py-2 rounded-full ${textColor} ${bgColor
+        }`}
       onClick={() => viewGift(gift.id)}
     >
       <div className="flex items-center space-x-2 w-90">
-        <span className="capitalize">{gift.name}</span>
+        <span style={{ textTransform: "capitalize" }}>{gift.name}</span>
         {gift.creatorId !== userId && (
           <span className="text-xs">
-            Idée de <span className="capitalize">{gift.creatorName}</span>
+            Idée de{" "}
+            <span style={{ textTransform: "capitalize" }}>
+              {gift.creatorName}
+            </span>
           </span>
         )}
       </div>
@@ -43,15 +45,10 @@ export default function GiftCardSimple({
       <div
         className="flex items-center justify-between gap-2"
         onClick={(e) => {
-          e.stopPropagation();
           viewGift(gift.id);
         }}
       >
-        <div
-          className={`capitalize bg-white text-sm rounded-full px-1 py-1 ${
-            eyesColor
-          }`}
-        >
+        <div className={`bg-white text-sm rounded-full px-1 py-1 ${eyesColor}`}>
           <EyeIcon className="w-5 h-5 cursor-pointer" />
         </div>
       </div>

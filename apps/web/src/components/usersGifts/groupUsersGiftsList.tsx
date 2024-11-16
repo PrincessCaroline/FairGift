@@ -42,7 +42,10 @@ export default function GroupUsersGiftsList({
           <div key={userGift.userId} className="p-4 bg-white shadow rounded-lg">
             <div className="flex items-center mb-4">
               <div className="w-12 h-12 bg-gray-500 rounded-full" />
-              <h2 className="ml-4 text-lg font-semibold text-gray-500 capitalize">
+              <h2
+                className="ml-4 text-lg font-semibold text-gray-500"
+                style={{ textTransform: "capitalize" }}
+              >
                 {userGift.userName}
               </h2>
             </div>

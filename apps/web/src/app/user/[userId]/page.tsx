@@ -69,7 +69,10 @@ export default function UserGiftPage() {
       )}
       <div className="flex-grow py-10">
         <div className="flex flex-col items-center mb-8">
-          <h1 className="text-xl font-semibold text-gray-500 capitalize">
+          <h1
+            className="text-xl font-semibold text-gray-500"
+            style={{ textTransform: "capitalize" }}
+          >
             {user.name}
           </h1>
         </div>

@@ -18,7 +18,7 @@ import { CreateGiftDto, UpdateGiftDto } from '@repo/dto';
 
 @Controller('gift')
 export class GiftController {
-  constructor(private readonly giftService: GiftService) {}
+  constructor(private readonly giftService: GiftService) { }
 
   @Post()
   @UsePipes(new ValidationPipe())
@@ -42,7 +42,6 @@ export class GiftController {
   @UsePipes(new ValidationPipe())
   @UseGuards(AuthGuard)
   async updateGift(
-    @AuthUser() user: UserAuth,
     @Param('id') giftId: number,
     @Body() updateGiftDto: UpdateGiftDto,
   ) {

@@ -56,17 +56,23 @@ export default function GiftCard({
       }
     >
       <div className="flex items-center space-x-2 w-90">
-        <span className="capitalize">{gift.name}</span>
+        <span style={{ textTransform: "capitalize" }}>{gift.name}</span>
         {gift.creatorId !== userId && (
           <span className="text-xs">
-            Idée de <span className="capitalize">{gift.creatorName}</span>
+            Idée de{" "}
+            <span style={{ textTransform: "capitalize" }}>
+              {gift.creatorName}
+            </span>
           </span>
         )}
       </div>
 
       {gift.buyers.length > 0 ? (
         <div className="flex items-center justify-between gap-2">
-          <div className="capitalize bg-gray-500 text-gray-300 text-sm rounded-full px-2 py-0.5">
+          <div
+            className="bg-gray-500 text-gray-300 text-sm rounded-full px-2 py-0.5"
+            style={{ textTransform: "capitalize" }}
+          >
             {gift.buyers.map((buyer) => buyer.name).join(", ")}
           </div>
         </div>
@@ -74,9 +80,9 @@ export default function GiftCard({
         <div
           className="flex items-center justify-between gap-2"
           /* onClick={(e) => {
-       e.stopPropagation();
-         viewGift(gift.id);
-       }}*/
+     e.stopPropagation();
+       viewGift(gift.id);
+     }}*/
         >
           <div
             className={`capitalize bg-white text-sm rounded-full px-1 py-1 ${
