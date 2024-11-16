@@ -54,7 +54,7 @@ export default function CreateGiftPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <HeaderGeneric name="Ajouter un cadeau" />
+      <HeaderGeneric name="Ajouter un Cadeau" />
       <div className="flex items-center justify-center py-10">
         <form
           onSubmit={handleSubmit}

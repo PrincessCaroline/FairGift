@@ -106,7 +106,7 @@ export default function GiftPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <HeaderGeneric name="Détails du cadeau" />
+      <HeaderGeneric name="Détails du Cadeau" />
       {(isError || userIsError) ?? (
         <WarningHeader
           text="Une erreur est survenue lors du chargement du cadeau."

@@ -44,7 +44,7 @@ export default function UserGiftPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <HeaderGeneric name="Echanger une idée de cadeau" />
+      <HeaderGeneric name="Choisir un Cadeau" />
       {(giftIsError || userIsError) ?? (
         <WarningHeader
           text="Erreur lors du chargement des cadeaux."

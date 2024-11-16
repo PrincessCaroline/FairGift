@@ -46,7 +46,7 @@ export default function UpdateGiftPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <HeaderGeneric name="Modifier un cadeau" />
+      <HeaderGeneric name="Modifier un Cadeau" />
       {isError && (
         <WarningHeader
           text="Erreur lors du chargement du cadeau."

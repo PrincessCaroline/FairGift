@@ -69,7 +69,7 @@ export default function UserAccount() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
-      <HeaderGeneric name="Mon compte" />
+      <HeaderGeneric name="Mon Compte" />
       {(userIsError || errorMessage) && (
         <WarningHeader
           text={

@@ -53,7 +53,7 @@ export default function GiftListPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <HeaderGeneric name="Mes cadeaux" />
+      <HeaderGeneric name="Mes Cadeaux" />
       {(giftsIsError || userIsError || isGroupsError) ?? (
         <WarningHeader
           text="Une erreur est survenue lors du chargement des cadeaux."
