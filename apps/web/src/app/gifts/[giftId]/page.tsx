@@ -5,6 +5,7 @@ import DeleteModal from "@/components/ui/deleteModal";
 import HeaderGeneric from "@/components/ui/headerGeneric";
 import {
   ArrowTopRightOnSquareIcon,
+  PencilIcon,
   PlusCircleIcon,
   TrashIcon,
 } from "@heroicons/react/24/solid";
@@ -188,6 +189,16 @@ export default function GiftPage() {
                 text="Je le prend"
                 Icon={PlusCircleIcon}
                 onClick={handleBuyGift}
+                className="mt-6"
+              />
+            )}
+
+          {gift.buyers.length === 0 &&
+            user.id.toString() === gift.creatorId.toString() && (
+              <GenericButton
+                text="Modifier"
+                Icon={PencilIcon}
+                onClick={() => router.push(`/gifts/${gift.id}/update`)}
                 className="mt-6"
               />
             )}
