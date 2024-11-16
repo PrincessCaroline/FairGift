@@ -6,16 +6,12 @@ import HeaderGeneric from "@/components/ui/headerGeneric";
 import LoadingPage from "@/components/ui/loading";
 import WarningHeader, { WarningType } from "@/components/ui/warningHeader";
 import { useUserGifts } from "@/hooks/useGift";
-import { useGroups } from "@/hooks/useGroup";
 import { useUser } from "@/hooks/useUserProfile";
-import { userCanAddGift } from "@/utils/canAddGift";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function UserGiftPage() {
-  const searchParams = useSearchParams();
-  const groupId = searchParams.get("groupId");
   const router = useRouter();
   const [userId, setUserId] = useState<number | null>(null);
 
@@ -29,11 +25,6 @@ export default function UserGiftPage() {
     }
   }, []);
 
-  const {
-    data: groups,
-    isLoading: isGroupsLoading,
-    isError: isGroupsError,
-  } = useGroups();
   const {
     data: user,
     isLoading: userIsLoading,
@@ -49,19 +40,12 @@ export default function UserGiftPage() {
     router.push(`/gifts/create/${userId}`);
   };
 
-  if (giftIsLoading || userIsLoading || isGroupsLoading || !user || !groups)
-    return <LoadingPage />;
-
-  const canAddGift = userCanAddGift({
-    gifts: gifts ?? [],
-    userId: user.id,
-    groups,
-  });
+  if (giftIsLoading || userIsLoading || !user) return <LoadingPage />;
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <HeaderGeneric name="Echanger une idée de cadeau" />
-      {(giftIsError || userIsError || isGroupsError) ?? (
+      {(giftIsError || userIsError) ?? (
         <WarningHeader
           text="Erreur lors du chargement des cadeaux."
           type={WarningType.ERROR}
@@ -96,12 +80,7 @@ export default function UserGiftPage() {
             })
             .map((gift) => (
               <div key={`${gift.id}-dispo`}>
-                <GiftCard
-                  gift={gift}
-                  groupId={Number(groupId)}
-                  userId={Number(user.id)}
-                  canAddGift={canAddGift}
-                />
+                <GiftCard gift={gift} userId={Number(user.id)} />
               </div>
             ))}
 
@@ -113,17 +92,12 @@ export default function UserGiftPage() {
             ?.filter((gift) => gift.buyers.length > 0)
             .map((gift) => (
               <div key={`${gift.id}-not-dispo`}>
-                <GiftCard
-                  gift={gift}
-                  groupId={Number(groupId)}
-                  userId={Number(user.id)}
-                />
+                <GiftCard gift={gift} userId={Number(user.id)} />
               </div>
             ))}
         </div>
       </div>
 
-      {/* Bouton sticky en bas */}
       <div className="bg-white w-full max-w-md px-6 py-4 mx-auto sticky bottom-0">
         <GenericButton
           text="Ajoute ta propre idée de cadeau"

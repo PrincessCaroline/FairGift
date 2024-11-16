@@ -11,6 +11,7 @@ import {
 import {
   useBuyGift,
   useCancelBuyGift,
+  useDeleteGift,
   useGift,
   useUserGifts,
 } from "@/hooks/useGift";
@@ -26,7 +27,11 @@ export default function GiftPage() {
   const router = useRouter();
   const [giftId, setGiftId] = useState<number | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [modalAction, setModalAction] = useState<
+    "cancelBuyGift" | "deleteGift" | null
+  >(null);
   const buyGiftMutation = useBuyGift();
+  const deleteMutation = useDeleteGift();
   const cancelBuyGiftMutation = useCancelBuyGift();
   const { data: gift, isLoading, isError } = useGift(giftId);
   const { data: gifts } = useUserGifts(Number(gift?.ownerId));
@@ -42,15 +47,40 @@ export default function GiftPage() {
     if (pathSegments[2]) setGiftId(Number(pathSegments[2]));
   }, []);
 
-  const cancelBuyGift = async (giftId: number) => {
-    await cancelBuyGiftMutation.mutateAsync(giftId);
-    router.back();
-  };
-
   const handleBuyGift = () => {
     if (giftId) {
       buyGiftMutation.mutate(giftId);
+      setIsDeleteModalOpen(false);
       router.back();
+    }
+  };
+
+  const handleCancelBuyGift = async () => {
+    if (giftId) {
+      await cancelBuyGiftMutation.mutateAsync(giftId);
+      setIsDeleteModalOpen(false);
+      router.back();
+    }
+  };
+
+  const handleDeleteGift = async () => {
+    if (giftId) {
+      await deleteMutation.mutateAsync(giftId);
+      setIsDeleteModalOpen(false);
+      router.back();
+    }
+  };
+
+  const openModal = (action: "cancelBuyGift" | "deleteGift") => {
+    setModalAction(action);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleModalConfirm = () => {
+    if (modalAction === "cancelBuyGift") {
+      handleCancelBuyGift();
+    } else if (modalAction === "deleteGift") {
+      handleDeleteGift();
     }
   };
 
@@ -146,7 +176,7 @@ export default function GiftPage() {
               <GenericButton
                 text="Je ne l'achète plus"
                 Icon={TrashIcon}
-                onClick={() => setIsDeleteModalOpen(true)}
+                onClick={() => openModal("cancelBuyGift")}
                 className="mt-6"
               />
             )}
@@ -161,6 +191,16 @@ export default function GiftPage() {
                 className="mt-6"
               />
             )}
+
+          {gift.buyers.length === 0 &&
+            user.id.toString() === gift.creatorId.toString() && (
+              <GenericButton
+                text="Supprimer"
+                Icon={TrashIcon}
+                onClick={() => openModal("deleteGift")}
+                className="mt-6"
+              />
+            )}
         </div>
       </div>
 
@@ -168,9 +208,17 @@ export default function GiftPage() {
         <DeleteModal
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
-          onConfirm={() => cancelBuyGift(gift.id)}
-          title="Confirmer la suppression"
-          message="Êtes-vous sûr de vouloir supprimer ce cadeau ?"
+          onConfirm={handleModalConfirm}
+          title={
+            modalAction === "cancelBuyGift"
+              ? "Confirmer l'annulation"
+              : "Confirmer la suppression"
+          }
+          message={
+            modalAction === "cancelBuyGift"
+              ? "Êtes-vous sûr de vouloir annuler cet achat ?"
+              : "Êtes-vous sûr de vouloir supprimer ce cadeau ?"
+          }
         />
       )}
     </div>

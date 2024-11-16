@@ -24,7 +24,7 @@ export default function GroupUsersGiftsList({
   } = useGroupUsersGifts(groupIdSelected);
 
   const handleViewUserClick = (userId: number) => {
-    if (canPickGift) router.push(`/user/${userId}?groupId=${groupIdSelected}`);
+    if (canPickGift) router.push(`/user/${userId}`);
   };
 
   if (isLoading) return <LoadingPage />;
@@ -52,11 +52,7 @@ export default function GroupUsersGiftsList({
             <div className="space-y-2">
               {userGift.gifts.map((gift: GiftDto) => (
                 <div key={gift.id}>
-                  <GiftCardSimple
-                    gift={gift}
-                    groupId={userGift.groupId}
-                    userId={userGift.userId}
-                  />
+                  <GiftCardSimple gift={gift} userId={userGift.userId} />
                 </div>
               ))}
             </div>

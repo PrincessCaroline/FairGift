@@ -132,7 +132,7 @@ export class GiftService {
 
   async deleteGift(userId: number, giftId: number): Promise<void> {
     const gift = await this.giftModel.findOne({
-      where: { id: giftId, ownerId: userId },
+      where: { id: giftId, creatorId: userId },
     });
     if (!gift) {
       throw new NotFoundException('Gift not found');

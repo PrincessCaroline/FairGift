@@ -5,29 +5,11 @@ import { useRouter } from "next/navigation";
 
 type GiftCardProps = {
   gift: GiftDto;
-  groupId: number;
   userId: number;
-  canAddGift?: boolean;
 };
 
-export default function GiftCard({
-  gift,
-  groupId,
-  userId,
-  //canAddGift = true,
-}: GiftCardProps) {
+export default function GiftCard({ gift, userId }: GiftCardProps) {
   const router = useRouter();
-
-  // const buyGiftMutation = useBuyGift();
-  /* const handleBuyGift = (giftId: number) => {
-     if (canAddGift) {
-       buyGiftMutation.mutate(giftId);
-     } else if (gift.creatorId !== userId) {
-       buyGiftMutation.mutate(giftId);
-     } else {
-       viewGift(giftId);
-     }
-   };*/
 
   const viewGift = (giftId: number) => {
     router.push(`/gifts/${giftId}`);
@@ -50,10 +32,7 @@ export default function GiftCard({
       className={`flex items-center justify-between px-4 py-2 rounded-full ${textColor} ${
         bgColor
       }`}
-      onClick={() =>
-        //gift.buyers.length === 0 ? handleBuyGift(gift.id) : viewGift(gift.id)
-        viewGift(gift.id)
-      }
+      onClick={() => viewGift(gift.id)}
     >
       <div className="flex items-center space-x-2 w-90">
         <span style={{ textTransform: "capitalize" }}>{gift.name}</span>
@@ -77,13 +56,7 @@ export default function GiftCard({
           </div>
         </div>
       ) : (
-        <div
-          className="flex items-center justify-between gap-2"
-          /* onClick={(e) => {
-   e.stopPropagation();
-     viewGift(gift.id);
-   }}*/
-        >
+        <div className="flex items-center justify-between gap-2">
           <div
             className={`capitalize bg-white text-sm rounded-full px-1 py-1 ${
               eyesColor
