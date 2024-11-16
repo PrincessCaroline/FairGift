@@ -12,7 +12,11 @@ import LoadingPage from "@/components/ui/loading";
 export default function DashboardPage() {
   const router = useRouter();
   const { data: groups, isLoading, isError } = useGroups();
-  const { data: gifts } = useMyGifts();
+  const {
+    data: gifts,
+    isLoading: giftsIsLoading,
+    isError: giftsIsError,
+  } = useMyGifts();
 
   const [groupIdSelected, setGroupIdSelected] = useState<number>(-1);
 
@@ -22,12 +26,12 @@ export default function DashboardPage() {
     }
   }, [groups, groupIdSelected]);
 
-  if (isError) {
+  if (isError || giftsIsError) {
     router.push("/login");
     return null;
   }
 
-  if (isLoading || !groups || !gifts) return <LoadingPage />;
+  if (isLoading || giftsIsLoading || !groups || !gifts) return <LoadingPage />;
 
   const goalGifts = groups.reduce(
     (acc, group) => acc + (group.memberCount - 1),

@@ -4,6 +4,7 @@ import {
   useMutation,
   UseMutationResult,
   useQuery,
+  useQueryClient,
   UseQueryOptions,
   UseQueryResult,
 } from "@tanstack/react-query";
@@ -43,5 +44,22 @@ export function useCheckToken(): UseQueryResult<any> {
     queryKey: ["checkToken"],
     queryFn: checkToken,
     retry: false,
+    refetchOnMount: true,
+    staleTime: Infinity,
+    cacheTime: Infinity,
   } as UseQueryOptions<any, Error>);
+}
+
+export function useLogout() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      await apiClient.post("/login/logout");
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["checkToken"] });
+      queryClient.refetchQueries({ queryKey: ["checkToken"] });
+    },
+  });
 }

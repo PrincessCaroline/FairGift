@@ -1,4 +1,10 @@
-import { IsString, IsEmail, MinLength } from "class-validator";
+import {
+  IsString,
+  IsEmail,
+  MinLength,
+  IsOptional,
+  Matches,
+} from "class-validator";
 
 export class CreateUserDto {
   @IsString()
@@ -10,5 +16,27 @@ export class CreateUserDto {
 
   @IsString()
   @MinLength(7, { message: "Le mot de passe doit avoir au moins 7 caractères" })
+  @Matches(/[A-Z]/, {
+    message: "Le mot de passe doit contenir au moins une majuscule",
+  })
+  @Matches(/\d/, {
+    message: "Le mot de passe doit contenir au moins un chiffre",
+  })
   password: string;
+}
+export class UpdateUserDto {
+  @IsOptional()
+  @IsString()
+  name?: string;
+
+  @IsOptional()
+  @IsString()
+  currentPassword?: string;
+
+  @IsOptional()
+  @IsString()
+  @MinLength(7, {
+    message: "Le mot de passe doit contenir au moins 7 caractères",
+  })
+  newPassword?: string;
 }

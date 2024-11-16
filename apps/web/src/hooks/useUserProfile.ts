@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import apiClient from "../lib/apiClient";
 import { UserDto } from "@repo/dto";
 
@@ -22,5 +22,33 @@ export function useUser(id: number | null) {
       return response.data;
     },
     enabled: !!id,
+  });
+}
+
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      currentPassword,
+      newPassword,
+      name,
+    }: {
+      currentPassword?: string;
+      newPassword?: string;
+      name?: string;
+    }) => {
+      const response = await apiClient.patch(`/users/`, {
+        currentPassword,
+        newPassword,
+        name,
+      });
+
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["userProfile"] });
+      alert("Profil mis à jour");
+    },
   });
 }

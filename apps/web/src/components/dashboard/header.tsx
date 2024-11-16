@@ -57,7 +57,10 @@ export default function Header({
         </div>
 
         <div className="flex items-center">
-          <CogIcon className="h-6 w-6 text-gray-600" />
+          <CogIcon
+            className="h-6 w-6 text-gray-600"
+            onClick={() => router.push("/user/account")}
+          />
         </div>
       </header>
 

@@ -11,9 +11,16 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const loginMutation = useLogin();
   const router = useRouter();
-  const { isLoading, isSuccess } = useCheckToken();
+  const { isLoading, isSuccess, isError } = useCheckToken();
 
-  if (isSuccess) router.push("/dashboard");
+  console.log("isLoading", isLoading);
+  console.log("isSuccess", isSuccess);
+  console.log("isError", isError);
+
+  if (!isLoading && isSuccess && !isError) {
+    console.log("Redirecting to dashboard");
+    router.push("/dashboard");
+  }
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();

@@ -9,7 +9,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import * as bcrypt from 'bcrypt';
 import { User } from './modeles/users.model';
 import { generateToken } from 'src/shared/utils/generateToken';
-import { CreateUserDto, UserDto } from '@repo/dto';
+import { CreateUserDto, UpdateUserDto, UserDto } from '@repo/dto';
 
 @Injectable()
 export class UsersService {
@@ -33,6 +33,36 @@ export class UsersService {
     });
 
     return generateToken({ id: user.id, email: user.email });
+  }
+
+  async updateUser(userId: number, updateUserDto: UpdateUserDto) {
+    const { currentPassword, newPassword, name } = updateUserDto;
+
+    const user = await this.userModel.findByPk(userId);
+
+    if (!user) {
+      throw new BadRequestException('Utilisateur non trouvé');
+    }
+
+    if (currentPassword) {
+      const isPasswordValid = await bcrypt.compare(
+        currentPassword,
+        user.password,
+      );
+      if (!isPasswordValid) {
+        throw new BadRequestException('Mot de passe actuel incorrect');
+      }
+    }
+
+    if (newPassword) {
+      user.password = await bcrypt.hash(newPassword, 10);
+    }
+
+    if (name) {
+      user.name = name;
+    }
+
+    await user.save();
   }
 
   async findByEmail(email: string) {
