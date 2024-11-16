@@ -118,7 +118,16 @@ export class GiftService {
           creatorId: gift.creator.id,
           createdAt: gift.createdAt,
           updatedAt: gift.updatedAt,
-          buyers: [],
+          buyers: !isMe
+            ? gift.buyers.map(
+                (buyer) =>
+                  new BuyerDto({
+                    userId: buyer.id,
+                    name: buyer.name,
+                    status: (buyer as any).GiftBuyer.status,
+                  }),
+              )
+            : [],
         }),
     );
   }

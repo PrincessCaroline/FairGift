@@ -37,7 +37,14 @@ export default function GiftListPage() {
     }
   };
 
-  if (giftsIsLoading || userIsLoading || isGroupsLoading || !user || !gifts || !groups)
+  if (
+    giftsIsLoading ||
+    userIsLoading ||
+    isGroupsLoading ||
+    !user ||
+    !gifts ||
+    !groups
+  )
     return <LoadingPage />;
 
   const goalGifts = groups
