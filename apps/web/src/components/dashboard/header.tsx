@@ -91,12 +91,8 @@ export default function Header({
             >
               <PlusCircleIcon className="h-8 w-8 mr-3" />
               <div>
-                <span className="font-medium">
-                  Créer un Groupe
-                </span>
-                <p className="text-sm">
-                  Pour votre famille, vos amis, ...
-                </p>
+                <span className="font-medium">Créer un Groupe</span>
+                <p className="text-sm">Pour votre famille, vos amis, ...</p>
               </div>
             </li>
           </ul>
