@@ -37,13 +37,11 @@ export default function GiftCard({ gift, userId, viewBuyers }: GiftCardProps) {
       onClick={() => viewGift(gift.id)}
     >
       <div className="flex items-center space-x-2 w-90">
-        <span style={{ textTransform: "capitalize" }}>{gift.name}</span>
+        <span className="first-letter:uppercase">{gift.name}</span>
         {gift.creatorId !== userId && (
           <span className="text-xs">
             Idée de{" "}
-            <span style={{ textTransform: "capitalize" }}>
-              {gift.creatorName}
-            </span>
+            <span className="first-letter:uppercase">{gift.creatorName}</span>
           </span>
         )}
       </div>

@@ -39,8 +39,12 @@ export class LoginController {
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   logout(@Res() res: Response) {
-    // Efface le cookie en le vidant
-    res.clearCookie('token');
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    });
+
     return res.json({ message: 'Logged out successfully' });
   }
 
