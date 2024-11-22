@@ -28,7 +28,9 @@ export class LoginController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: 60 * 24 * 60 * 60 * 1000, // 2 mois
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      sameSite: 'lax',
+      domain:
+        process.env.NODE_ENV === 'production' ? '.fair-gift.fr' : undefined,
     });
 
     return res
@@ -42,9 +44,9 @@ export class LoginController {
     res.clearCookie('token', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      sameSite: 'lax',
+      domain: '.fair-gift.fr',
     });
-
     return res.json({ message: 'Logged out successfully' });
   }
 
