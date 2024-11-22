@@ -29,7 +29,6 @@ export function useLogin(): UseMutationResult<
     mutationFn: loginUser,
     onError: (error) => {
       console.error(error);
-      alert("Invalid credentials.");
     },
   });
 }

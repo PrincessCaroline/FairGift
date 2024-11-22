@@ -12,6 +12,7 @@ export default function LoginPage() {
   const loginMutation = useLogin();
   const router = useRouter();
   const { isLoading, isSuccess, isError } = useCheckToken();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   if (!isLoading && isSuccess && !isError) {
     router.push("/dashboard");
@@ -27,7 +28,7 @@ export default function LoginPage() {
         },
         onError: (error) => {
           console.error("Login error:", error);
-          alert("Login failed. Please check your credentials.");
+          setErrorMessage("Échec de la connexion. Vérifiez vos identifiants.");
         },
       },
     );
@@ -48,7 +49,7 @@ export default function LoginPage() {
                 type="email"
                 placeholder="Email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setErrorMessage(null) }}
                 required
                 className="text-gray-800 w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400"
               />
@@ -56,10 +57,14 @@ export default function LoginPage() {
                 type="password"
                 placeholder="Mot de passe"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => { setPassword(e.target.value); setErrorMessage(null) }}
                 required
                 className="text-gray-800 w-full px-4 py-2 border border-gray-300 text-gray-800 rounded-lg shadow-sm focus:outline-none focus:border-yellow-400"
               />
+
+              {errorMessage && (
+                <p className="text-red-600 text-sm font-medium">{errorMessage}</p>
+              )}
 
               <GenericButton
                 text={
@@ -67,7 +72,7 @@ export default function LoginPage() {
                 }
                 disabled={loginMutation.isPending}
                 type="submit"
-                onClick={() => {}}
+                onClick={() => { }}
                 className="mt-6"
               />
             </form>
