@@ -34,7 +34,7 @@ export class UsersController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       expires: date,
-      sameSite: process.env.NODE_ENV === 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     });
 
     return res.status(HttpStatus.OK).json({ message: 'User Created' });
