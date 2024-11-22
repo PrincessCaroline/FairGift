@@ -12,6 +12,7 @@ export function useCreateGift() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["myGifts"] });
+      queryClient.invalidateQueries({ queryKey: ["userGifts"] });
     },
   });
 }
@@ -24,8 +25,10 @@ export function useBuyGift() {
       const response = await apiClient.post(`/gift/${giftId}/buy`);
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, giftId) => {
       queryClient.invalidateQueries({ queryKey: ["userGifts"] });
+      queryClient.invalidateQueries({ queryKey: ["gift", giftId] });
+
     },
   });
 }
@@ -82,8 +85,10 @@ export function useDeleteGift() {
       const response = await apiClient.delete(`/gift/${giftId}`);
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, giftId) => {
+      queryClient.invalidateQueries({ queryKey: ["userGifts"] });
       queryClient.invalidateQueries({ queryKey: ["myGifts"] });
+      queryClient.invalidateQueries({ queryKey: ["gift", giftId] });
     },
   });
 }
@@ -96,8 +101,10 @@ export function useCancelBuyGift() {
       const response = await apiClient.delete(`/gift/cancelBuyGif/${giftId}`);
       return response.data;
     },
-    onSuccess: () => {
+    onSuccess: (_, giftId) => {
       queryClient.invalidateQueries({ queryKey: ["userGifts"] });
+      queryClient.invalidateQueries({ queryKey: ["myGifts"] });
+      queryClient.invalidateQueries({ queryKey: ["gift", giftId] });
     },
   });
 }
