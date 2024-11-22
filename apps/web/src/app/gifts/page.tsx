@@ -1,7 +1,7 @@
 "use client";
 
 import HeaderGeneric from "@/components/ui/headerGeneric";
-import { PlusCircleIcon } from "@heroicons/react/24/solid";
+import { ArrowDownIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import { useMyGifts } from "@/hooks/useGift";
 import { useUserProfile } from "@/hooks/useUserProfile";
@@ -67,18 +67,27 @@ export default function GiftListPage() {
         )}
         <div className="flex flex-col items-center p-4">
           <div className="w-full space-y-4">
-            {gifts?.map((gift) => (
-              <div
-                key={gift.id}
-                onClick={() => router.push(`/gifts/${gift.id}/update`)}
-              >
-                <GiftCard
-                  gift={gift}
-                  userId={Number(gift.ownerId)}
-                  viewBuyers={false}
-                />
+            {gifts && gifts.length ? (
+              gifts.map((gift) => (
+                <div
+                  key={gift.id}
+                  onClick={() => router.push(`/gifts/${gift.id}/update`)}
+                >
+                  <GiftCard
+                    gift={gift}
+                    userId={Number(gift.ownerId)}
+                    viewBuyers={false}
+                  />
+                </div>
+              ))
+            ) : (
+              <div className="flex flex-col items-center justify-center h-screen">
+                <h1 className="text-2xl font-bold text-gray-700 mb-4 text-center">
+                  Aller, on commence à créer ces cadeaux !
+                </h1>
+                <ArrowDownIcon className="w-10 h-10 text-gray-700 animate-bounce" />
               </div>
-            ))}
+            )}
           </div>
         </div>
       </div>
