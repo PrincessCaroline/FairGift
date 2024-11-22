@@ -27,11 +27,14 @@ export class UsersController {
   async createUser(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
     const accessToken = await this.usersService.createUser(createUserDto);
 
+    const date = new Date();
+    date.setMonth(date.getMonth() + 2);
+
     res.cookie('token', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 24 * 60 * 60 * 1000, // 2 mois
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      expires: date,
+      sameSite: process.env.NODE_ENV === 'lax',
     });
 
     return res.status(HttpStatus.OK).json({ message: 'User Created' });

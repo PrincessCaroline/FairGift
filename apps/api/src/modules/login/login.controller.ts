@@ -24,13 +24,14 @@ export class LoginController {
   async login(@Body() loginDto: LoginDto, @Res() res: Response) {
     const accessToken = await this.loginService.login(loginDto);
 
+    const date = new Date();
+    date.setMonth(date.getMonth() + 2);
+
     res.cookie('token', accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 60 * 24 * 60 * 60 * 1000, // 2 mois
+      expires: date,
       sameSite: 'lax',
-      domain:
-        process.env.NODE_ENV === 'production' ? '.fair-gift.fr' : undefined,
     });
 
     return res
@@ -45,7 +46,6 @@ export class LoginController {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
-      domain: '.fair-gift.fr',
     });
     return res.json({ message: 'Logged out successfully' });
   }
