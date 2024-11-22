@@ -7,7 +7,7 @@ import WarningHeader, { WarningType } from "@/components/ui/warningHeader";
 import { useLogout } from "@/hooks/useLogin";
 import { useUpdateUser, useUserProfile } from "@/hooks/useUserProfile";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function UserAccount() {
   const router = useRouter();
@@ -21,10 +21,16 @@ export default function UserAccount() {
     isError: userIsError,
   } = useUserProfile();
 
-  const [userName, setUserName] = useState(user?.name ?? "");
+  const [userName, setUserName] = useState("");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  useEffect(() => {
+    if (user) {
+      setUserName(user.name);
+    }
+  }, [user]);
 
   const validatePassword = (password: string) => {
     const hasUpperCase = /[A-Z]/.test(password);
@@ -62,6 +68,7 @@ export default function UserAccount() {
 
   const handleLogout = async () => {
     await logoutMutation.mutateAsync();
+    localStorage.removeItem("selectedGroupId");
     router.push("/");
   };
 
