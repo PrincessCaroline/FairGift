@@ -106,8 +106,6 @@ export default function GiftPage() {
   )
     return <LoadingPage />;
 
-  console.log("canIpickGift", canIpickGift);
-
   /*
   const canAddGift = userCanAddGift({
     gifts: gifts ?? [],

@@ -62,7 +62,7 @@ export function useMyGifts() {
 
 export function useCanIPickGift(groupId: number | null) {
   return useQuery({
-    queryKey: ["canIPickGift"],
+    queryKey: ["canIPickGift", groupId],
     queryFn: async () => {
       const response = await apiClient.get<CanIPickGiftDto>(
         `/gift/canIPickGift/${groupId}`,
@@ -85,7 +85,7 @@ export function useGift(giftId: number | null) {
 
 export function useGroupUsersGifts(groupId: number) {
   return useQuery({
-    queryKey: ["groupGifts"],
+    queryKey: ["groupGifts", groupId],
     queryFn: async () => {
       const response = await apiClient.get<GroupUsersGiftDto[]>(
         `/gift/group/${groupId}`,
@@ -108,7 +108,6 @@ export function useDeleteGift() {
       queryClient.invalidateQueries({ queryKey: ["myGifts"] });
       queryClient.invalidateQueries({ queryKey: ["gift", giftId] });
       queryClient.invalidateQueries({ queryKey: ["canIPickGift"] });
-
     },
   });
 }

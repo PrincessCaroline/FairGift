@@ -27,8 +27,8 @@ export default function Header({
   const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
 
   const handleSelect = (id: number) => {
-    setGroupIdSelected(id);
     localStorage.setItem("selectedGroupId", id.toString());
+    setGroupIdSelected(id);
     setIsDropdownOpen(false);
   };
 
