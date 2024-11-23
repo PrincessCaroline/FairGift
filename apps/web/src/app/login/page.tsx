@@ -31,7 +31,7 @@ export default function LoginPage() {
         },
         onError: (error) => {
           console.error("Login error:", error);
-          setErrorMessage(t('loginPage.error'));
+          setErrorMessage(t("loginPage.error"));
         },
       },
     );
@@ -45,12 +45,12 @@ export default function LoginPage() {
         ) : (
           <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
             <h2 className="text-2xl font-bold text-center text-gray-800">
-              {t('loginPage.login')}
+              {t("loginPage.login")}
             </h2>
             <form onSubmit={handleLogin} className="space-y-4">
               <input
                 type="email"
-                placeholder={t('loginPage.email')}
+                placeholder={t("loginPage.email")}
                 value={email}
                 onChange={(e) => {
                   setEmail(e.target.value);
@@ -61,7 +61,7 @@ export default function LoginPage() {
               />
               <input
                 type="password"
-                placeholder={t('loginPage.password')}
+                placeholder={t("loginPage.password")}
                 value={password}
                 onChange={(e) => {
                   setPassword(e.target.value);
@@ -72,17 +72,19 @@ export default function LoginPage() {
               />
 
               {errorMessage && (
-                <p className="text-red-600 text-sm font-medium">{errorMessage}</p>
+                <p className="text-red-600 text-sm font-medium">
+                  {errorMessage}
+                </p>
               )}
 
               <GenericButton
                 text={
                   loginMutation.isPending
-                    ? t('loginPage.connecting')
-                    : t('loginPage.login')
+                    ? t("loginPage.connecting")
+                    : t("loginPage.login")
                 }
                 disabled={loginMutation.isPending}
-                onClick={() => { }}
+                onClick={() => {}}
                 type="submit"
                 className="w-full"
               />

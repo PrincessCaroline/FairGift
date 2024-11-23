@@ -40,3 +40,11 @@ export class GroupUsersGiftDto {
     Object.assign(this, groupUsersGiftDto);
   }
 }
+
+export class CanIPickGiftDto {
+  canPickGift: boolean;
+
+  constructor(canIPickGiftDto: CanIPickGiftDto) {
+    Object.assign(this, canIPickGiftDto);
+  }
+}

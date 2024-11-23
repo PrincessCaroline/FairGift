@@ -55,6 +55,15 @@ export class GiftController {
     return this.giftService.getUserGifts(Number(userId), false);
   }
 
+  @Get('canIPickGift/:groupId')
+  @UseGuards(AuthGuard)
+  async getCanIPickGift(
+    @AuthUser() user: UserAuth,
+    @Param('groupId') groupId: number,
+  ) {
+    return this.giftService.getCanIPickGift(Number(user.id), Number(groupId));
+  }
+
   @Get('me')
   @UseGuards(AuthGuard)
   async getMyGifts(@AuthUser() user: UserAuth) {

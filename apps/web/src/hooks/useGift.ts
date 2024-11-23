@@ -1,6 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import apiClient from "@/lib/apiClient";
-import { CreateGiftDto, GiftDto, GroupUsersGiftDto } from "@repo/dto";
+import {
+  CanIPickGiftDto,
+  CreateGiftDto,
+  GiftDto,
+  GroupUsersGiftDto,
+} from "@repo/dto";
 
 export function useCreateGift() {
   const queryClient = useQueryClient();
@@ -28,7 +33,8 @@ export function useBuyGift() {
     onSuccess: (_, giftId) => {
       queryClient.invalidateQueries({ queryKey: ["userGifts"] });
       queryClient.invalidateQueries({ queryKey: ["gift", giftId] });
-
+      queryClient.invalidateQueries({ queryKey: ["canIPickGift"] });
+      queryClient.invalidateQueries({ queryKey: ["groupGifts"] });
     },
   });
 }
@@ -54,6 +60,18 @@ export function useMyGifts() {
   });
 }
 
+export function useCanIPickGift(groupId: number | null) {
+  return useQuery({
+    queryKey: ["canIPickGift"],
+    queryFn: async () => {
+      const response = await apiClient.get<CanIPickGiftDto>(
+        `/gift/canIPickGift/${groupId}`,
+      );
+      return response.data;
+    },
+  });
+}
+
 export function useGift(giftId: number | null) {
   return useQuery({
     queryKey: ["gift", giftId],
@@ -67,7 +85,7 @@ export function useGift(giftId: number | null) {
 
 export function useGroupUsersGifts(groupId: number) {
   return useQuery({
-    queryKey: ["groupGifts", groupId],
+    queryKey: ["groupGifts"],
     queryFn: async () => {
       const response = await apiClient.get<GroupUsersGiftDto[]>(
         `/gift/group/${groupId}`,
@@ -89,6 +107,8 @@ export function useDeleteGift() {
       queryClient.invalidateQueries({ queryKey: ["userGifts"] });
       queryClient.invalidateQueries({ queryKey: ["myGifts"] });
       queryClient.invalidateQueries({ queryKey: ["gift", giftId] });
+      queryClient.invalidateQueries({ queryKey: ["canIPickGift"] });
+
     },
   });
 }
@@ -105,6 +125,8 @@ export function useCancelBuyGift() {
       queryClient.invalidateQueries({ queryKey: ["userGifts"] });
       queryClient.invalidateQueries({ queryKey: ["myGifts"] });
       queryClient.invalidateQueries({ queryKey: ["gift", giftId] });
+      queryClient.invalidateQueries({ queryKey: ["canIPickGift"] });
+      queryClient.invalidateQueries({ queryKey: ["groupGifts"] });
     },
   });
 }

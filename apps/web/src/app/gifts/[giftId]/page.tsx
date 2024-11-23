@@ -12,20 +12,23 @@ import {
 import {
   useBuyGift,
   useCancelBuyGift,
+  useCanIPickGift,
   useDeleteGift,
   useGift,
+  useMyGifts,
   useUserGifts,
 } from "@/hooks/useGift";
 import { useRouter } from "next/navigation";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import { userCanAddGift } from "@/utils/canAddGift";
-import { useGroups } from "@/hooks/useGroup";
+//import { userCanAddGift } from "@/utils/canAddGift";
+//import { useGroups } from "@/hooks/useGroup";
 import GenericButton from "@/components/ui/genericButton";
 import LoadingPage from "@/components/ui/loading";
 import WarningHeader, { WarningType } from "@/components/ui/warningHeader";
 
 export default function GiftPage() {
   const router = useRouter();
+  const savedGroupId = localStorage.getItem("selectedGroupId");
   const [giftId, setGiftId] = useState<number | null>(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [modalAction, setModalAction] = useState<
@@ -35,13 +38,19 @@ export default function GiftPage() {
   const deleteMutation = useDeleteGift();
   const cancelBuyGiftMutation = useCancelBuyGift();
   const { data: gift, isLoading, isError } = useGift(giftId);
-  const { data: gifts } = useUserGifts(Number(gift?.ownerId));
-  const { data: groups } = useGroups();
+  //const { data: gifts } = useUserGifts(Number(gift?.ownerId));
+  //const { data: groups } = useGroups();
   const {
     data: user,
     isLoading: userIsLoading,
     isError: userIsError,
   } = useUserProfile();
+  const { data: myGifts, isLoading: mygiftsIsLoading } = useMyGifts();
+  const {
+    data: canIpickGift,
+    isLoading: isCanIpickGiftLoading,
+    isError: isCanIpickGiftError,
+  } = useCanIPickGift(savedGroupId ? Number(savedGroupId) : null);
 
   useEffect(() => {
     const pathSegments = window.location.pathname.split("/");
@@ -85,13 +94,28 @@ export default function GiftPage() {
     }
   };
 
-  if (isLoading || userIsLoading || !gift || !user) return <LoadingPage />;
+  if (
+    isLoading ||
+    userIsLoading ||
+    mygiftsIsLoading ||
+    isCanIpickGiftLoading ||
+    !gift ||
+    !user ||
+    //  !groups ||
+    !myGifts
+  )
+    return <LoadingPage />;
 
+  console.log("canIpickGift", canIpickGift);
+
+  /*
   const canAddGift = userCanAddGift({
     gifts: gifts ?? [],
     userId: gift.ownerId.toString(),
     groups: groups ?? [],
   });
+
+
 
   const displayAddGiftButton =
     canAddGift ||
@@ -102,12 +126,16 @@ export default function GiftPage() {
             (buyer) => buyer.userId.toString() === user.id.toString(),
           ),
       ) ||
-        gift.creatorId.toString() !== gift.ownerId.toString()));
+        gift.creatorId.toString() !== gift.ownerId.toString()));*/
+
+  const displayAddGiftButton =
+    canIpickGift?.canPickGift ||
+    gift.creatorId.toString() !== gift.ownerId.toString();
 
   return (
     <div className="min-h-screen bg-white">
       <HeaderGeneric name="Détails du Cadeau" />
-      {(isError || userIsError) ?? (
+      {(isError || userIsError || isCanIpickGiftError) ?? (
         <WarningHeader
           text="Une erreur est survenue lors du chargement du cadeau."
           type={WarningType.ERROR}
@@ -116,7 +144,7 @@ export default function GiftPage() {
 
       {!displayAddGiftButton && !gift.buyers.length && (
         <WarningHeader
-          text={`Vous ne pouvez plus acheter de cadeaux créés par ${gift.creatorName}. Il faut en laisser pour tout le monde !`}
+          text={`Vous ne pouvez plus acheter de cadeaux créés par ${gift.creatorName}.`}
           type={WarningType.WARNING}
         />
       )}
@@ -182,16 +210,14 @@ export default function GiftPage() {
               />
             )}
 
-          {gift.buyers.length === 0 &&
-            user.id.toString() !== gift.ownerId.toString() &&
-            displayAddGiftButton && (
-              <GenericButton
-                text="Je le prend"
-                Icon={PlusCircleIcon}
-                onClick={handleBuyGift}
-                className="mt-6"
-              />
-            )}
+          {displayAddGiftButton && gift.buyers.length === 0 && (
+            <GenericButton
+              text="Je le prend"
+              Icon={PlusCircleIcon}
+              onClick={handleBuyGift}
+              className="mt-6"
+            />
+          )}
 
           {gift.buyers.length === 0 &&
             user.id.toString() === gift.creatorId.toString() && (

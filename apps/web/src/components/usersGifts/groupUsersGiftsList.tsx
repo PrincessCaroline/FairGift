@@ -10,12 +10,12 @@ import GiftCard from "../gift/giftCard";
 
 type GroupUsersGiftsListProps = {
   groupIdSelected: number;
-  canPickGift: boolean;
+  //canPickGift: boolean;
 };
 
 export default function GroupUsersGiftsList({
   groupIdSelected,
-  canPickGift,
+  //canPickGift,
 }: GroupUsersGiftsListProps) {
   const router = useRouter();
   const {
@@ -25,7 +25,8 @@ export default function GroupUsersGiftsList({
   } = useGroupUsersGifts(groupIdSelected);
 
   const handleViewUserClick = (userId: number) => {
-    if (canPickGift) router.push(`/user/${userId}`);
+    // if (canPickGift) router.push(`/user/${userId}`);
+    router.push(`/user/${userId}`);
   };
 
   if (isLoading) return <LoadingPage />;
@@ -64,7 +65,7 @@ export default function GroupUsersGiftsList({
 
             <GenericButton
               text={"Ajouter un cadeau"}
-              disabled={!canPickGift}
+              //disabled={!canPickGift}
               Icon={PlusCircleIcon}
               type="submit"
               onClick={() => handleViewUserClick(userGift.userId)}

@@ -4,6 +4,7 @@ import { Gift } from './modeles/gift.model';
 import { GiftBuyer } from './modeles/gift-buyer.model';
 import {
   BuyerDto,
+  CanIPickGiftDto,
   CreateGiftDto,
   GiftDto,
   GroupUsersGiftDto,
@@ -130,6 +131,32 @@ export class GiftService {
             : [],
         }),
     );
+  }
+
+  async getCanIPickGift(
+    userId: number,
+    groupId: number,
+  ): Promise<CanIPickGiftDto> {
+    const myGifts = await this.giftModel.findAll({
+      where: {
+        ownerId: userId,
+        creatorId: userId,
+      },
+    });
+
+    const group =
+      await this.groupService.getGroupWithUserAndGiftByGroupId(groupId);
+
+    const allGifts = group.members.flatMap((member) => member.gifts);
+
+    const totalGift = allGifts.filter(
+      (gift) =>
+        gift.ownerId !== userId && // Le propriétaire du cadeau n'est pas l'utilisateur actuel
+        gift.creator.id === gift.ownerId && // Le créateur est aussi le propriétaire
+        gift.buyers.some((buyer) => buyer.id === userId), // L'utilisateur actuel est un acheteur
+    ).length;
+
+    return new CanIPickGiftDto({ canPickGift: myGifts.length > totalGift });
   }
 
   async deleteGift(userId: number, giftId: number): Promise<void> {

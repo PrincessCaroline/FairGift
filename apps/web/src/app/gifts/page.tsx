@@ -5,8 +5,8 @@ import { ArrowDownIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import { useRouter } from "next/navigation";
 import { useMyGifts } from "@/hooks/useGift";
 import { useUserProfile } from "@/hooks/useUserProfile";
-import ProgressBar from "@/components/dashboard/progresseBar";
-import { useGroups } from "@/hooks/useGroup";
+/*import ProgressBar from "@/components/dashboard/progresseBar";
+import { useGroups } from "@/hooks/useGroup";*/
 
 import GenericButton from "@/components/ui/genericButton";
 import LoadingPage from "@/components/ui/loading";
@@ -25,11 +25,11 @@ export default function GiftListPage() {
     isLoading: userIsLoading,
     isError: userIsError,
   } = useUserProfile();
-  const {
+  /*const {
     data: groups,
     isLoading: isGroupsLoading,
     isError: isGroupsError,
-  } = useGroups();
+  } = useGroups();*/
 
   const handleAddGift = () => {
     if (user) {
@@ -37,34 +37,27 @@ export default function GiftListPage() {
     }
   };
 
-  if (
-    giftsIsLoading ||
-    userIsLoading ||
-    isGroupsLoading ||
-    !user ||
-    !gifts ||
-    !groups
-  )
+  if (giftsIsLoading || userIsLoading || !user || !gifts)
     return <LoadingPage />;
 
-  const goalGifts = groups
+  /*const goalGifts = groups
     ? groups.reduce((acc, group) => acc + (group.memberCount - 1), 0)
     : 0;
-  const canPickGift = (gifts?.length ?? 0) >= goalGifts;
+  const canPickGift = (gifts?.length ?? 0) >= goalGifts;*/
 
   return (
     <div className="min-h-screen bg-white">
       <HeaderGeneric name="Mes Cadeaux" />
-      {(giftsIsError || userIsError || isGroupsError) ?? (
+      {(giftsIsError || userIsError) ?? (
         <WarningHeader
           text="Une erreur est survenue lors du chargement des cadeaux."
           type={WarningType.ERROR}
         />
       )}
       <div className="min-h-screen">
-        {!canPickGift && (
+        {/*!canPickGift && (
           <ProgressBar totalGifts={gifts?.length ?? 0} goalGifts={goalGifts} />
-        )}
+        )*/}
         <div className="flex flex-col items-center p-4">
           <div className="w-full space-y-4">
             {gifts && gifts.length ? (

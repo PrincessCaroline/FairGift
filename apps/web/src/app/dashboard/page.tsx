@@ -5,7 +5,7 @@ import HeaderDashboard from "@/components/dashboard/header";
 import GroupUsersGiftsList from "@/components/usersGifts/groupUsersGiftsList";
 import { useGroups } from "@/hooks/useGroup";
 import { useEffect, useState } from "react";
-import ProgressBar from "@/components/dashboard/progresseBar";
+//import ProgressBar from "@/components/dashboard/progresseBar";
 import { useMyGifts } from "@/hooks/useGift";
 import LoadingPage from "@/components/ui/loading";
 
@@ -38,11 +38,11 @@ export default function DashboardPage() {
 
   if (isLoading || giftsIsLoading || !groups || !gifts) return <LoadingPage />;
 
-  const goalGifts = groups.reduce(
+  /*const goalGifts = groups.reduce(
     (acc, group) => acc + (group.memberCount - 1),
     0,
   );
-  const canPickGift = (gifts?.length ?? 0) >= goalGifts;
+  const canPickGift = (gifts.length) >= goalGifts;*/
 
   return (
     <div>
@@ -52,13 +52,13 @@ export default function DashboardPage() {
         setGroupIdSelected={setGroupIdSelected}
       />
       <div className="min-h-screen bg-white">
-        {!canPickGift && (
-          <ProgressBar totalGifts={gifts?.length ?? 0} goalGifts={goalGifts} />
-        )}
+        {/*!canPickGift && (
+          <ProgressBar totalGifts={gifts.length} goalGifts={goalGifts} />
+        )*/}
         {groupIdSelected >= 0 ? (
           <GroupUsersGiftsList
             groupIdSelected={groupIdSelected}
-            canPickGift={canPickGift}
+            //canPickGift={canPickGift}
           />
         ) : null}
       </div>
