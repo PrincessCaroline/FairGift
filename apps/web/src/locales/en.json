@@ -1,0 +1,11 @@
+{
+  "loginPage": {
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "forgotPassword": "Forgot password?",
+    "register": "Register",
+    "connecting": "Connecting...",
+    "error": "Login failed. Please check your credentials."
+  }
+}

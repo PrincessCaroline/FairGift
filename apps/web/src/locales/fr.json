@@ -1,0 +1,11 @@
+{
+  "loginPage": {
+    "email": "Email",
+    "password": "Mot de passe",
+    "login": "Connexion",
+    "forgotPassword": "Mot de passe oublié ?",
+    "register": "S'inscrire",
+    "connecting": "Connexion en cours...",
+    "error": "Échec de la connexion. Vérifiez vos identifiants."
+  }
+}
